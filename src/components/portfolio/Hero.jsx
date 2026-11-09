@@ -2,6 +2,55 @@ import { ArrowDown, Download, MapPin } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
 import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile } from '@/data/portfolioContent';
+import useInView from '@/hooks/useInView';
+import { cn } from '@/lib/utils';
+
+const parseYear = (value) => {
+  const n = parseInt(String(value || '').slice(0, 4), 10);
+  return Number.isFinite(n) ? n : null;
+};
+
+// Frise des années de parcours, de la première prise de poste à aujourd'hui.
+function PlanBar({ experiences }) {
+  const [ref, on] = useInView({ threshold: 0.6 });
+  const now = new Date().getFullYear();
+  const starts = (experiences || []).map((e) => parseYear(e.start)).filter(Boolean);
+  const first = starts.length ? Math.min(...starts) : 2000;
+  const span = Math.max(now - first, 1);
+  const marks = [...new Set([first, ...starts, now])].sort((a, b) => a - b);
+
+  return (
+    <div ref={ref} aria-hidden="true" className={cn('relative h-12', on && 'is-on')}>
+      <div className="plan-track" />
+      <div className="plan-bar" />
+      {marks.map((year) => {
+        const left = ((year - first) / span) * 100;
+        const delay = `${0.1 + (left / 100) * 1.2}s`;
+        return (
+          <span key={year}>
+            <i className={cn('plan-dot', year === now && 'is-now')} style={{ left: `${left}%`, transitionDelay: delay }} />
+            <span
+              className="absolute bottom-0 font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground"
+              style={{
+                left: `${left}%`,
+                transform: left > 95 ? 'translateX(-100%)' : left < 5 ? 'none' : 'translateX(-50%)',
+              }}
+            >
+              {year === now ? (
+                <>
+                  <span className="md:hidden">{year}</span>
+                  <span className="hidden md:inline">Aujourd&apos;hui</span>
+                </>
+              ) : (
+                year
+              )}
+            </span>
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Hero({ profile = defaultProfile, experiences }) {
   const [firstName, ...rest] = profile.name.split(' ');
@@ -68,6 +117,12 @@ export default function Hero({ profile = defaultProfile, experiences }) {
                 <Download className="h-4 w-4" />
                 Télécharger mon CV
               </button>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.38}>
+            <div className="mt-16 md:mt-20">
+              <PlanBar experiences={experiences} />
             </div>
           </Reveal>
         </div>
