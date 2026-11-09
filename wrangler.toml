@@ -6,7 +6,7 @@ pages_build_output_dir = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "portfolio"
-database_id = "REMPLACER_PAR_L_ID_D1"
+database_id = "be8186dd-6b4a-46f4-859c-c14c3c955df2"
 migrations_dir = "migrations"
 
 # Créé avec `npx wrangler r2 bucket create portfolio-files`.
