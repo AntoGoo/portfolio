@@ -1,16 +1,8 @@
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-export default function Reveal({ children, className, delay = 0, y = 18 }) {
-  return (
-    <motion.div
-      className={cn(className)}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-70px' }}
-      transition={{ duration: 0.65, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
+// Plus d'apparition en fondu : le seul mouvement non déclenché par
+// l'utilisateur est le tracé du planning (Hero et Parcours).
+// eslint-disable-next-line no-unused-vars
+export default function Reveal({ children, className, delay, y }) {
+  return <div className={cn(className)}>{children}</div>;
 }

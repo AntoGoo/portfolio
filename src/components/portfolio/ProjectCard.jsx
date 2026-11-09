@@ -1,93 +1,42 @@
-import { ArrowUpRight, ExternalLink } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Image } from '@/components/ui/image';
-import { tagStyle } from '@/lib/tagStyle';
+import { ExternalLink } from 'lucide-react';
 
-export default function ProjectCard({ project, featured, onOpen }) {
+// Ligne de l'index des réalisations. Toute la ligne ouvre la fiche ;
+// le lien externe éventuel reste cliquable au-dessus.
+export default function ProjectCard({ project, onOpen, onPreview }) {
   return (
     <article
-      className={cn(
-        'group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 md:p-7',
-        featured && 'md:p-9'
-      )}
+      className="index-row grid grid-cols-12 items-baseline gap-x-4 gap-y-1 border-b border-border py-5 md:py-6"
+      onMouseEnter={() => onPreview?.(project)}
+      onMouseLeave={() => onPreview?.(null)}
     >
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-primary/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
       <button
         type="button"
         onClick={onOpen}
         aria-label={`Ouvrir la fiche : ${project.title}`}
         className="absolute inset-0 z-0 cursor-pointer"
       />
-
-      <div className="pointer-events-none relative z-10 flex h-full flex-col">
-        <div className="flex items-center justify-between gap-3">
-          {project.year ? (
-            <span
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]',
-                tagStyle(project.year)
-              )}
-            >
-              {project.year}
-            </span>
-          ) : (
-            <span aria-hidden="true" />
-          )}
-          {project.logo_url && (
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-background/40 p-1.5">
-              <Image src={project.logo_url} alt="" className="h-full w-full" fittingType="fit" />
-            </span>
-          )}
-        </div>
-
-        <h3
-          className={cn(
-            'mt-5 font-heading font-semibold leading-snug tracking-[-0.015em] text-foreground transition-colors group-hover:text-primary',
-            featured ? 'text-[22px] md:text-[26px]' : 'text-[18px]'
-          )}
-        >
-          {project.title}
-        </h3>
-
-        <p className="mt-3 line-clamp-3 text-[13.5px] leading-relaxed text-muted-foreground">
-          {project.context}
-        </p>
-
-        <div className="mt-auto pt-7">
-          <div className="flex flex-wrap gap-1.5">
-            {(project.tags || []).map((tag) => (
-              <span
-                key={tag}
-                className={cn(
-                  'rounded border px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
-                  tagStyle(tag)
-                )}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-          <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
-            <span className="flex items-center gap-2 text-[12px] font-medium text-foreground/70 transition-colors group-hover:text-foreground">
-              Ouvrir la fiche
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </span>
-            {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(event) => event.stopPropagation()}
-                aria-label={project.link_label || 'Ouvrir le lien du projet'}
-                className="pointer-events-auto relative z-20 flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
+      <span className="pointer-events-none relative col-span-12 text-[14px] text-muted-foreground md:col-span-2">
+        {project.year}
+      </span>
+      <h3 className="index-title pointer-events-none relative col-span-12 text-[1.35rem] font-semibold leading-tight tracking-[-0.025em] md:col-span-6 md:text-[1.8rem]">
+        {project.title}
+      </h3>
+      <span className="pointer-events-none relative hidden text-[14px] text-muted-foreground md:col-span-3 md:block">
+        {(project.tags || []).join(', ')}
+      </span>
+      <span className="relative col-span-12 md:col-span-1 md:text-right">
+        {project.link && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={project.link_label || 'Ouvrir le lien du projet'}
+            className="relative z-10 inline-flex h-9 w-9 items-center justify-center border border-border transition-colors hover:border-primary hover:text-primary"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        )}
+      </span>
     </article>
   );
 }
