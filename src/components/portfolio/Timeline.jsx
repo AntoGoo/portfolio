@@ -2,43 +2,40 @@ import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import useInView from '@/hooks/useInView';
 import { cn } from '@/lib/utils';
-
-const parseYear = (value) => {
-  const n = parseInt(String(value || '').slice(0, 4), 10);
-  return Number.isFinite(n) ? n : null;
-};
+import { currentYearFraction, toYearFraction } from '@/lib/dates';
 
 function Gantt({ jobs }) {
   const [ref, on] = useInView({ threshold: 0.35 });
-  const now = new Date().getFullYear();
+  const now = currentYearFraction();
 
   const rows = jobs
     .map((job) => {
-      const start = parseYear(job.start);
-      const end = parseYear(job.end) ?? now;
-      return start ? { ...job, from: start, to: Math.max(end, start), current: !parseYear(job.end) } : null;
+      const start = toYearFraction(job.start);
+      const end = toYearFraction(job.end);
+      return start ? { ...job, from: start, to: Math.max(end ?? now, start), current: end === null } : null;
     })
     .filter(Boolean)
     .sort((a, b) => a.from - b.from);
 
   if (!rows.length) return null;
 
-  const first = rows[0].from;
+  const first = Math.floor(rows[0].from);
+  const last = Math.floor(now);
   const span = Math.max(now - first, 1);
   const pos = (year) => ((year - first) / span) * 100;
   const ticks = [];
-  for (let y = first; y < now - 2; y += 6) ticks.push(y);
-  ticks.push(now);
+  for (let y = first; y < last - 2; y += 6) ticks.push(y);
+  ticks.push(last);
 
   return (
     <div
       ref={ref}
       className={cn('rounded-xl border border-border bg-card p-5 md:p-8', on && 'is-on')}
       role="img"
-      aria-label={`Diagramme du parcours de ${first} à ${now}`}
+      aria-label={`Diagramme du parcours de ${first} à ${last}`}
     >
-      <div className="grid grid-cols-[112px_1fr] border-b border-border/70 pb-3 md:grid-cols-[240px_1fr]">
-        <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Poste</span>
+      <div className="grid grid-cols-1 border-b border-border/70 pb-3 md:grid-cols-[240px_1fr]">
+        <span className="hidden text-[10px] uppercase tracking-[0.24em] text-muted-foreground md:block">Poste</span>
         <div className="relative h-4">
           {ticks.map((y, i) => (
             <span
@@ -47,7 +44,7 @@ function Gantt({ jobs }) {
                 'absolute font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground',
                 i % 2 === 1 && i !== ticks.length - 1 && 'hidden md:inline'
               )}
-              style={{ left: `${pos(y)}%`, transform: i === ticks.length - 1 ? 'translateX(-100%)' : i === 0 ? 'none' : 'translateX(-50%)' }}
+              style={{ left: `${i === ticks.length - 1 ? 100 : pos(y)}%`, transform: i === ticks.length - 1 ? 'translateX(-100%)' : i === 0 ? 'none' : 'translateX(-50%)' }}
             >
               {y}
             </span>
@@ -58,9 +55,9 @@ function Gantt({ jobs }) {
       {rows.map((job, i) => (
         <div
           key={job.id || `${job.role}-${job.from}`}
-          className="grid min-h-[72px] grid-cols-[112px_1fr] items-center border-b border-border/70 last:border-none md:grid-cols-[240px_1fr]"
+          className="grid grid-cols-1 border-b border-border/70 last:border-none md:min-h-[72px] md:grid-cols-[240px_1fr] md:items-center"
         >
-          <div className="py-3 pr-4">
+          <div className="pt-4 md:py-3 md:pr-4">
             <p className="font-heading text-[13.5px] font-semibold leading-tight tracking-[-0.01em] md:text-[15px]">
               {job.role}
             </p>
@@ -68,7 +65,7 @@ function Gantt({ jobs }) {
               {[job.start, job.end].filter(Boolean).join(' — ')}
             </p>
           </div>
-          <div className="gantt-track relative h-full min-h-[72px]" style={{ backgroundSize: `${100 / span}% 100%` }}>
+          <div className="gantt-track relative h-9 md:h-full md:min-h-[72px]" style={{ backgroundSize: `${100 / span}% 100%` }}>
             <div
               className={cn('gantt-bar', job.current && 'is-current')}
               style={{

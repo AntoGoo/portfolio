@@ -4,45 +4,68 @@ import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile } from '@/data/portfolioContent';
 import useInView from '@/hooks/useInView';
 import { cn } from '@/lib/utils';
+import { currentYearFraction, toYearFraction } from '@/lib/dates';
 
-const parseYear = (value) => {
-  const n = parseInt(String(value || '').slice(0, 4), 10);
-  return Number.isFinite(n) ? n : null;
+// Masque les libellés trop proches du précédent ou de « Aujourd'hui » ;
+// les jalons, eux, restent tous affichés.
+const pickLabels = (lefts, gap, endGap) => {
+  let previous = -Infinity;
+  return lefts.map((left, i) => {
+    const edge = i === 0 || i === lefts.length - 1;
+    const keep = edge || (left - previous >= gap && 100 - left >= endGap);
+    if (keep) previous = left;
+    return keep;
+  });
 };
 
 // Frise des années de parcours, de la première prise de poste à aujourd'hui.
 function PlanBar({ experiences }) {
   const [ref, on] = useInView({ threshold: 0.6 });
-  const now = new Date().getFullYear();
-  const starts = (experiences || []).map((e) => parseYear(e.start)).filter(Boolean);
+  const now = currentYearFraction();
+  const starts = (experiences || []).map((e) => toYearFraction(e.start)).filter(Boolean);
   const first = starts.length ? Math.min(...starts) : 2000;
   const span = Math.max(now - first, 1);
-  const marks = [...new Set([first, ...starts, now])].sort((a, b) => a - b);
+  const marks = [...new Set([first, ...starts])].sort((a, b) => a - b).concat(now);
+  const lefts = marks.map((year) => ((year - first) / span) * 100);
+  const onDesktop = pickLabels(lefts, 7, 11);
+  const onMobile = pickLabels(lefts, 16, 16);
 
   return (
     <div ref={ref} aria-hidden="true" className={cn('relative h-12', on && 'is-on')}>
       <div className="plan-track" />
       <div className="plan-bar" />
-      {marks.map((year) => {
-        const left = ((year - first) / span) * 100;
-        const delay = `${0.1 + (left / 100) * 1.2}s`;
+      {marks.map((year, i) => {
+        const left = lefts[i];
+        const isNow = i === marks.length - 1;
+        if (!onDesktop[i] && !onMobile[i] && !isNow) {
+          return (
+            <i key={year} className="plan-dot" style={{ left: `${left}%`, transitionDelay: `${0.1 + (left / 100) * 1.2}s` }} />
+          );
+        }
         return (
           <span key={year}>
-            <i className={cn('plan-dot', year === now && 'is-now')} style={{ left: `${left}%`, transitionDelay: delay }} />
+            <i
+              className={cn('plan-dot', isNow && 'is-now')}
+              style={{ left: `${left}%`, transitionDelay: `${0.1 + (left / 100) * 1.2}s` }}
+            />
             <span
-              className="absolute bottom-0 font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground"
+              className={cn(
+                'absolute bottom-0 font-mono text-[10.5px] tracking-[0.12em] text-muted-foreground',
+                !onMobile[i] && 'hidden md:inline',
+                !onDesktop[i] && 'md:hidden'
+              )}
               style={{
                 left: `${left}%`,
-                transform: left > 95 ? 'translateX(-100%)' : left < 5 ? 'none' : 'translateX(-50%)',
+                transform: isNow ? 'translateX(-100%)' : i === 0 ? 'none' : 'translateX(-50%)',
               }}
             >
-              {year === now ? (
+              {isNow ? (
                 <>
-                  <span className="md:hidden">{year}</span>
+                  <span className="md:hidden">{Math.floor(year)}</span>
                   <span className="hidden md:inline">Aujourd&apos;hui</span>
                 </>
               ) : (
-                year
+                Math.floor(year)
               )}
             </span>
           </span>
