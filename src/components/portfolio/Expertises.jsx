@@ -2,33 +2,38 @@ import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import { expertises } from '@/data/portfolioContent';
 
+// Les expertises présentées comme les lots d'un marché.
 export default function Expertises() {
   return (
     <Section
       id="expertises"
-      index="02"
+      index="04"
       eyebrow="Expertises"
-      title="Quatre domaines complémentaires"
+      title="Quatre lots, un seul interlocuteur"
+      className="bg-secondary/60"
     >
-      <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border/60 sm:grid-cols-2">
+      <div className="grid border-t border-foreground/80 md:grid-cols-2">
         {expertises.map((item, i) => (
-          <Reveal key={item.key} delay={0.05 * i} className="bg-card">
-            <div className="group h-full p-7 transition-colors duration-300 hover:bg-secondary/40 md:p-9">
-              <h3 className="font-heading text-[16px] font-semibold tracking-[-0.01em]">
-                <span className="inline-flex rounded-md border border-border px-3 py-1 text-primary transition-colors group-hover:border-primary/60">
-                  {item.title}
-                </span>
-              </h3>
-              <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{item.summary}</p>
-              <ul className="mt-6 space-y-2.5">
-                {item.items.map((line) => (
-                  <li key={line} className="flex items-start gap-3 text-[13.5px] text-foreground/80">
-                    <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary/70" />
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <Reveal
+            key={item.key}
+            delay={0.06 * (i % 2)}
+            className="border-b rm-rule py-9 md:px-10 md:odd:border-r md:odd:pl-0 md:even:pr-0 md:[&:nth-last-child(-n+2)]:border-b-0"
+          >
+            <p className="rm-label">
+              Lot <span className="text-primary">0{i + 1}</span>
+            </p>
+            <h3 className="mt-4 font-display text-[clamp(1.9rem,2.8vw,2.6rem)] leading-[1.02] tracking-[-0.015em]">
+              {item.title}
+            </h3>
+            <p className="mt-4 max-w-[44ch] text-[16px] leading-[1.55] text-muted-foreground">{item.summary}</p>
+            <ul className="mt-7 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+              {item.items.map((line) => (
+                <li key={line} className="flex gap-3 font-mono text-[13px] leading-[1.5] text-foreground/80">
+                  <span className="text-primary">—</span>
+                  {line}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         ))}
       </div>

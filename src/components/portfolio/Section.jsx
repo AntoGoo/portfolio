@@ -1,28 +1,29 @@
 import Reveal from '@/components/portfolio/Reveal';
 import { cn } from '@/lib/utils';
 
+// En-tête de section façon dossier de projet : référence en mono, titre en serif.
 export default function Section({ id, index, eyebrow, title, lead, children, className }) {
   return (
-    <section id={id} className={cn('border-t border-border/70 py-20 md:py-28', className)}>
-      <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10">
+    <section id={id} className={cn('py-[clamp(4.5rem,10vw,9rem)]', className)}>
+      <div className="rm-container">
         <Reveal>
-          <header className="border-b border-border/70 pb-8 md:pb-10">
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] font-semibold tracking-[0.24em] text-primary">{index}</span>
-              <span className="h-px w-8 bg-primary/50" />
-              <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{eyebrow}</span>
+          <header className="grid gap-x-10 gap-y-5 border-t rm-rule pt-6 md:grid-cols-12">
+            <p className="rm-label md:col-span-3 md:pt-3">
+              <span className="text-primary">§ {index}</span>
+              <span className="mx-2 opacity-40">/</span>
+              {eyebrow}
+            </p>
+            <div className="md:col-span-9">
+              <h2 className="rm-display max-w-[18ch] text-balance text-[clamp(2.4rem,5.2vw,4.75rem)]">{title}</h2>
+              {lead && (
+                <p className="mt-6 max-w-[52ch] text-[clamp(1.0625rem,0.4vw+0.95rem,1.1875rem)] leading-[1.55] text-muted-foreground">
+                  {lead}
+                </p>
+              )}
             </div>
-            <h2 className="mt-5 max-w-[26ch] font-heading text-[1.75rem] font-semibold leading-[1.12] tracking-[-0.02em] md:text-[2.2rem]">
-              {title}
-            </h2>
-            {lead && (
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-[17px]">
-                {lead}
-              </p>
-            )}
           </header>
         </Reveal>
-        <div className="pt-10 md:pt-14">{children}</div>
+        <div className="pt-[clamp(2.5rem,5vw,4.5rem)]">{children}</div>
       </div>
     </section>
   );

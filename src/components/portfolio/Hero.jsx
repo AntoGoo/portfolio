@@ -1,76 +1,117 @@
-import { ArrowDown, Download, MapPin } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowDownRight, Download } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
 import { downloadCv } from '@/lib/generateCv';
+import { experienceSpans, extractClients, largestTeam, yearsOfExperience } from '@/lib/roadmap';
 import { profile as defaultProfile } from '@/data/portfolioContent';
 
-export default function Hero({ profile = defaultProfile, experiences }) {
-  const [firstName, ...rest] = profile.name.split(' ');
+const ease = [0.16, 1, 0.3, 1];
+
+// « Faire avancer les projets. Donner du sens à la technologie. » → une ligne par phrase.
+const splitSentences = (text) =>
+  String(text || '')
+    .split(/(?<=[.!?])\s+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+export default function Hero({ profile = defaultProfile, projects, experiences }) {
+  const lines = splitSentences(profile.tagline);
+  const spans = experienceSpans(experiences || []);
+  const clients = extractClients(experiences || []);
+
+  const figures = [
+    { value: yearsOfExperience(spans), unit: 'ans', caption: 'de conduite de projets' },
+    { value: clients.length || null, unit: 'clients', caption: 'grands comptes et secteur public' },
+    { value: largestTeam(experiences || []), unit: 'personnes', caption: 'coordonnées sur un même projet' },
+    { value: projects?.length || null, unit: 'projets', caption: 'détaillés plus bas' },
+  ].filter((item) => item.value);
 
   return (
-    <section id="top" className="relative overflow-hidden pt-[68px]">
-      <div className="pointer-events-none absolute inset-0 bg-grid opacity-[0.55] [mask-image:radial-gradient(ellipse_at_50%_35%,black,transparent_72%)]" />
-      <div className="pointer-events-none absolute -right-32 -top-24 h-[520px] w-[520px] rounded-full bg-primary/10 blur-[130px]" />
-      <div className="pointer-events-none absolute -bottom-24 left-1/4 h-[280px] w-[420px] rounded-full bg-primary/5 blur-[120px]" />
+    <section id="top" className="relative pt-[88px]">
+      <div className="rm-container">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b rm-rule py-5">
+          <p className="rm-label">
+            <span className="text-foreground">{profile.name}</span>
+            <span className="mx-2 opacity-40">—</span>
+            {profile.role}
+          </p>
+          <p className="rm-label">{profile.location}</p>
+        </div>
 
-      <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-14 px-6 pb-20 pt-16 md:px-10 md:pb-28 md:pt-24 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-12">
-          <Reveal>
-            <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
-              {profile.location}
-            </div>
-          </Reveal>
+        <h1 className="rm-display pt-[clamp(2.5rem,6vw,5rem)] text-[clamp(3rem,7.3vw,7.75rem)]">
+          {lines.map((line, i) => (
+            <span key={line} className="block overflow-hidden pb-[0.08em]">
+              <motion.span
+                className={i % 2 === 1 ? 'block italic text-primary' : 'block'}
+                initial={{ y: '105%' }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1, delay: 0.1 + i * 0.12, ease }}
+              >
+                {line}
+              </motion.span>
+            </span>
+          ))}
+        </h1>
 
-          <Reveal delay={0.08}>
-            <h1 className="mt-7 font-heading text-[2.9rem] font-semibold leading-[0.94] tracking-[-0.035em] text-balance sm:text-[3.8rem] lg:text-[4.4rem]">
-              {firstName}
-              {rest.length > 0 && (
-                <>
-                  <br />
-                  <span className="text-muted-foreground">{rest.join(' ')}</span>
-                </>
-              )}
-            </h1>
-          </Reveal>
+        <div className="grid gap-x-10 gap-y-12 pb-[clamp(3rem,6vw,5rem)] pt-[clamp(2.5rem,4.5vw,4rem)] md:grid-cols-12">
+          {figures.length > 0 && (
+            <dl className="grid grid-cols-2 self-start border-t rm-rule md:col-span-5">
+              {figures.map((item, i) => (
+                <Reveal
+                  key={item.unit}
+                  delay={0.4 + i * 0.07}
+                  className="border-b rm-rule py-5 pr-4 even:border-l even:pl-5"
+                >
+                  <dt className="sr-only">{item.caption}</dt>
+                  <dd>
+                    <span className="rm-display text-[clamp(2.5rem,4vw,3.5rem)] tabular-nums">{item.value}</span>
+                    <span className="ml-2 font-mono text-[13px] text-foreground/70">{item.unit}</span>
+                    <p className="mt-1.5 text-[13.5px] leading-snug text-muted-foreground">{item.caption}</p>
+                  </dd>
+                </Reveal>
+              ))}
+            </dl>
+          )}
 
-          <Reveal delay={0.14}>
-            <p className="mt-7 text-[12px] font-medium uppercase tracking-[0.26em] text-primary">
-              {profile.role}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.2}>
-            <p className="mt-8 max-w-xl font-heading text-xl font-medium leading-snug tracking-[-0.01em] text-foreground md:text-[1.6rem]">
-              {profile.tagline}
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.26}>
-            <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-muted-foreground md:text-base">
+          <Reveal delay={0.3} className="md:col-span-6 md:col-start-7">
+            <p className="max-w-[46ch] text-[clamp(1.0625rem,0.5vw+0.95rem,1.25rem)] leading-[1.55] text-foreground/80">
               {profile.intro}
             </p>
-          </Reveal>
-
-          <Reveal delay={0.32}>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
+            <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
               <a
-                href="#parcours"
-                className="inline-flex h-[46px] items-center gap-2 rounded-md border border-primary/50 px-6 text-sm font-medium text-primary transition-all hover:border-primary hover:bg-primary/10"
+                href="#realisations"
+                className="group inline-flex h-12 items-center gap-3 bg-foreground px-6 text-[15px] font-medium text-background transition-colors duration-300 hover:bg-primary"
               >
-                Découvrir mon parcours
-                <ArrowDown className="h-4 w-4" />
+                Voir les réalisations
+                <ArrowDownRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
               </a>
               <button
                 type="button"
                 onClick={() => downloadCv({ profile, experiences })}
-                className="inline-flex h-[46px] items-center gap-2 rounded-md border border-border px-6 text-sm font-medium text-foreground transition-all hover:border-primary/60 hover:text-primary"
+                className="rm-link inline-flex items-center gap-2 text-[15px] font-medium"
               >
                 <Download className="h-4 w-4" />
-                Télécharger mon CV
+                Télécharger le CV
               </button>
             </div>
           </Reveal>
         </div>
+
+        {clients.length > 0 && (
+          <Reveal delay={0.2}>
+            <div className="grid gap-4 border-t rm-rule py-7 md:grid-cols-12 md:gap-10">
+              <p className="rm-label md:col-span-3">Clients accompagnés</p>
+              <p className="font-mono text-[13.5px] leading-[1.9] text-foreground/75 md:col-span-9">
+                {clients.map((name, i) => (
+                  <span key={name} className="whitespace-nowrap">
+                    {name}
+                    {i < clients.length - 1 && <span className="mx-2.5 text-primary/70">/</span>}
+                  </span>
+                ))}
+              </p>
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   );

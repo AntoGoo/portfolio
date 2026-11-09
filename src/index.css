@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -115,5 +115,110 @@
       radial-gradient(820px 520px at -12% 60%, hsl(var(--primary) / 0.13), transparent 68%),
       radial-gradient(900px 600px at 60% 108%, hsl(var(--primary) / 0.1), transparent 70%),
       linear-gradient(180deg, hsl(219 30% 19%) 0%, hsl(219 24% 13%) 34%, hsl(var(--background)) 78%);
+  }
+}
+/* Portfolio public : direction « feuille de route ».
+   Thème limité à .theme-roadmap pour ne pas toucher au studio. */
+@layer base {
+  .theme-roadmap {
+    --background: 42 30% 94%;
+    --foreground: 30 12% 11%;
+    --card: 42 33% 97%;
+    --card-foreground: 30 12% 11%;
+    --popover: 42 33% 97%;
+    --popover-foreground: 30 12% 11%;
+    --primary: 12 72% 44%;
+    --primary-foreground: 42 33% 97%;
+    --secondary: 40 22% 89%;
+    --secondary-foreground: 30 12% 11%;
+    --muted: 40 22% 90%;
+    --muted-foreground: 30 6% 38%;
+    --accent: 12 72% 44%;
+    --accent-foreground: 42 33% 97%;
+    --border: 36 14% 81%;
+    --input: 36 12% 74%;
+    --ring: 12 72% 44%;
+    --ink: 30 12% 11%;
+    --paper: 42 30% 94%;
+    --radius: 2px;
+    --font-heading: 'Instrument Serif', 'Times New Roman', serif;
+    --font-display: 'Instrument Serif', 'Times New Roman', serif;
+    --font-body: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --gutter: clamp(1.25rem, 4vw, 3.5rem);
+
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-body);
+    font-size: 17px;
+    letter-spacing: -0.005em;
+  }
+
+  .theme-roadmap ::selection {
+    background-color: hsl(var(--primary) / 0.18);
+    color: hsl(var(--foreground));
+  }
+
+  .theme-roadmap :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .rm-container {
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .rm-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .rm-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+  }
+
+  .rm-rule {
+    border-color: hsl(var(--foreground) / 0.14);
+  }
+
+  .rm-link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 400ms var(--ease-out), color 250ms;
+  }
+
+  .rm-link:hover {
+    background-size: 100% 1px;
+  }
+
+  /* Trame discrète de papier millimétré pour la feuille de route. */
+  .rm-graph {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+    background-size: var(--rm-col, 10%) 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-roadmap *,
+  .theme-roadmap *::before,
+  .theme-roadmap *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
