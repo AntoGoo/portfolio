@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -41,8 +41,12 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
     const file = event.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
-    setForm((prev) => ({ ...prev, logo_url: file_url }));
+    try {
+      const { file_url } = await api.upload(file);
+      setForm((prev) => ({ ...prev, logo_url: file_url }));
+    } catch (err) {
+      toast({ title: 'Envoi impossible', description: err.message, variant: 'destructive' });
+    }
     setUploading(false);
     event.target.value = '';
   };
@@ -64,10 +68,16 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
     delete payload.created_by_id;
     delete payload.created_date;
     delete payload.updated_date;
-    if (project?.id) {
-      await base44.entities.Project.update(project.id, payload);
-    } else {
-      await base44.entities.Project.create(payload);
+    try {
+      if (project?.id) {
+        await api.projects.update(project.id, payload);
+      } else {
+        await api.projects.create(payload);
+      }
+    } catch (err) {
+      setSaving(false);
+      toast({ title: 'Enregistrement impossible', description: err.message, variant: 'destructive' });
+      return;
     }
     setSaving(false);
     toast({ title: project?.id ? 'Projet mis à jour' : 'Projet créé' });

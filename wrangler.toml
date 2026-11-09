@@ -1,0 +1,15 @@
+name = "portfolio"
+compatibility_date = "2026-10-01"
+pages_build_output_dir = "./dist"
+
+# Après `npx wrangler d1 create portfolio`, remplacer database_id par l'identifiant renvoyé.
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio"
+database_id = "REMPLACER_PAR_L_ID_D1"
+migrations_dir = "migrations"
+
+# Créé avec `npx wrangler r2 bucket create portfolio-files`.
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "portfolio-files"

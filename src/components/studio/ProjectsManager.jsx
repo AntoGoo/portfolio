@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ExternalLink, Pencil, Plus, Trash2 } from 'lucide-react';
@@ -10,7 +10,7 @@ export default function ProjectsManager() {
   const [editing, setEditing] = useState(null);
 
   const load = () => {
-    base44.entities.Project.filter({}, { sort: 'order', limit: 100 }).then((page) => setItems(page.items || []));
+    api.projects.list().then(setItems).catch(() => setItems([]));
   };
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function ProjectsManager() {
 
   const remove = async (project) => {
     if (!window.confirm(`Supprimer « ${project.title} » ?`)) return;
-    await base44.entities.Project.delete(project.id);
+    await api.projects.remove(project.id);
     load();
   };
 
@@ -27,7 +27,7 @@ export default function ProjectsManager() {
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-4">
         <p className="text-[13px] text-muted-foreground">
-          Les cartes de projet s'affichent dans l'ordre de création. Un lien est optionnel.
+          Chaque projet devient une carte sur le site. Le lien est optionnel.
         </p>
         <Button onClick={() => setEditing({})} className="shrink-0 gap-2">
           <Plus className="h-4 w-4" />

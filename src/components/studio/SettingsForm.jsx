@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -36,11 +36,11 @@ export default function SettingsForm() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    base44.entities.SiteSettings.filter({}, { sort: '-created_date', limit: 1 }).then((page) => {
-      const found = page.items?.[0] || null;
+    api.settings.list().then((rows) => {
+      const found = rows?.[0] || null;
       setRecord(found);
       setForm({ ...empty, ...(found || {}) });
-    });
+    }).catch(() => setForm({ ...empty }));
   }, []);
 
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
@@ -53,11 +53,17 @@ export default function SettingsForm() {
     delete payload.created_by_id;
     delete payload.created_date;
     delete payload.updated_date;
-    if (record?.id) {
-      await base44.entities.SiteSettings.update(record.id, payload);
-    } else {
-      const created = await base44.entities.SiteSettings.create(payload);
-      setRecord(created);
+    try {
+      if (record?.id) {
+        await api.settings.update(record.id, payload);
+      } else {
+        const created = await api.settings.create(payload);
+        setRecord(created);
+      }
+    } catch (err) {
+      setSaving(false);
+      toast({ title: 'Enregistrement impossible', description: err.message, variant: 'destructive' });
+      return;
     }
     setSaving(false);
     toast({ title: 'Profil mis à jour' });

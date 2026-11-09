@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -40,10 +40,16 @@ export default function ExperienceForm({ experience, onSaved, onCancel }) {
     delete payload.created_by_id;
     delete payload.created_date;
     delete payload.updated_date;
-    if (experience?.id) {
-      await base44.entities.Experience.update(experience.id, payload);
-    } else {
-      await base44.entities.Experience.create(payload);
+    try {
+      if (experience?.id) {
+        await api.experiences.update(experience.id, payload);
+      } else {
+        await api.experiences.create(payload);
+      }
+    } catch (err) {
+      setSaving(false);
+      toast({ title: 'Enregistrement impossible', description: err.message, variant: 'destructive' });
+      return;
     }
     setSaving(false);
     toast({ title: experience?.id ? 'Expérience mise à jour' : 'Expérience créée' });

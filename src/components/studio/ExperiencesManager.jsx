@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
@@ -10,9 +10,7 @@ export default function ExperiencesManager() {
   const [editing, setEditing] = useState(null);
 
   const load = () => {
-    base44.entities.Experience
-      .filter({}, { sort: 'order', limit: 100 })
-      .then((page) => setItems(page.items || []));
+    api.experiences.list().then(setItems).catch(() => setItems([]));
   };
 
   useEffect(() => {
@@ -21,7 +19,7 @@ export default function ExperiencesManager() {
 
   const remove = async (job) => {
     if (!window.confirm(`Supprimer « ${job.role} » ?`)) return;
-    await base44.entities.Experience.delete(job.id);
+    await api.experiences.remove(job.id);
     load();
   };
 

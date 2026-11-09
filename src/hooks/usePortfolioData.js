@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { api } from '@/api/client';
 import { profile as fallbackProfile } from '@/data/portfolioContent';
 
 export default function usePortfolioData() {
@@ -9,16 +9,19 @@ export default function usePortfolioData() {
 
   useEffect(() => {
     let alive = true;
-    Promise.all([
-      base44.entities.SiteSettings.filter({}, { sort: '-created_date', limit: 1 }),
-      base44.entities.Project.filter({ published: true }, { sort: 'order', limit: 50 }),
-      base44.entities.Experience.filter({ published: true }, { sort: 'order', limit: 50 }),
-    ]).then(([settingsPage, projectsPage, experiencesPage]) => {
-      if (!alive) return;
-      setSettings(settingsPage?.items?.[0] || null);
-      setProjects(projectsPage?.items || []);
-      setExperiences(experiencesPage?.items || []);
-    });
+    api
+      .portfolio()
+      .then((data) => {
+        if (!alive) return;
+        setSettings(data?.settings || null);
+        setProjects(data?.projects || []);
+        setExperiences(data?.experiences || []);
+      })
+      .catch(() => {
+        if (!alive) return;
+        setProjects([]);
+        setExperiences([]);
+      });
     return () => {
       alive = false;
     };
