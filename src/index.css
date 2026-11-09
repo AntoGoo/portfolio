@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -116,4 +116,188 @@
       radial-gradient(900px 600px at 60% 108%, hsl(var(--primary) / 0.1), transparent 70%),
       linear-gradient(180deg, hsl(219 30% 19%) 0%, hsl(219 24% 13%) 34%, hsl(var(--background)) 78%);
   }
+}
+/* ------------------------------------------------------------------
+   Thème « calque » du portfolio public : grille de planning visible,
+   filets d'encre, jalons en losange. Limité à .theme-calque pour ne
+   pas toucher au Studio ni aux pages d'authentification.
+------------------------------------------------------------------- */
+.theme-calque {
+  --background: 75 11% 94%;
+  --foreground: 215 35% 13%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 35% 13%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 35% 13%;
+  --primary: 226 81% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 90 7% 90%;
+  --secondary-foreground: 215 35% 13%;
+  --muted: 90 7% 90%;
+  --muted-foreground: 216 16% 35%;
+  --accent: 226 81% 55%;
+  --accent-foreground: 0 0% 100%;
+  --border: 215 11% 80%;
+  --input: 215 11% 80%;
+  --ring: 226 81% 55%;
+  --radius: 0px;
+  --jalon: 36 77% 53%;
+  --ink: 215 35% 13%;
+  --font-heading: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+}
+
+.theme-calque ::selection {
+  background-color: hsl(226 81% 55% / 0.2);
+  color: hsl(215 35% 13%);
+}
+
+/* Section sombre, contrastée, dans le thème clair */
+.theme-calque .ink-block {
+  --background: 215 35% 13%;
+  --foreground: 75 11% 94%;
+  --card: 215 30% 17%;
+  --border: 215 18% 30%;
+  --muted-foreground: 216 14% 68%;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Conteneur aligné sur la grille */
+.calque-wrap {
+  width: min(1240px, 100% - 48px);
+  margin-inline: auto;
+}
+
+/* Grille de 12 colonnes visible sur toute la page */
+.calque-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+}
+.calque-grid > div {
+  width: min(1240px, 100% - 48px);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  border-left: 1px solid hsl(var(--border) / 0.55);
+}
+.calque-grid span {
+  border-right: 1px solid hsl(var(--border) / 0.55);
+}
+.calque-grid span:nth-child(3n) {
+  border-right-color: hsl(var(--border));
+}
+@media (max-width: 767px) {
+  .calque-grid > div { grid-template-columns: repeat(4, 1fr); }
+  .calque-grid span:nth-child(n + 5) { display: none; }
+}
+
+/* Jalon en losange */
+.jalon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--jalon));
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* Barre de planning du Hero : le seul tracé animé avec le Gantt */
+.plan-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 2px;
+  width: 100%;
+  background: hsl(var(--primary));
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  transition: transform 1.6s cubic-bezier(0.65, 0, 0.2, 1);
+}
+.is-on .plan-bar { transform: translateY(-50%) scaleX(1); }
+
+.plan-dot,
+.gantt-ms {
+  position: absolute;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  background: hsl(var(--jalon));
+  transform: translate(-50%, -50%) rotate(45deg) scale(0);
+  transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.is-on .plan-dot,
+.is-on .gantt-ms { transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+
+.gantt-track {
+  background-image: linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px);
+}
+.gantt-bar {
+  position: absolute;
+  top: 50%;
+  height: 10px;
+  background: hsl(var(--ink));
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s cubic-bezier(0.65, 0, 0.2, 1);
+}
+.gantt-bar.is-current { background: hsl(var(--primary)); }
+.gantt-bar.is-current::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -6px;
+  bottom: -6px;
+  width: 2px;
+  background: hsl(var(--primary));
+  animation: gantt-now 1.6s ease-in-out infinite;
+}
+.is-on .gantt-bar { transform: translateY(-50%) scaleX(1); }
+@keyframes gantt-now { 50% { opacity: 0.2; } }
+
+/* Soulignement qui s'étire au survol */
+.line-link {
+  background: linear-gradient(hsl(var(--primary)), hsl(var(--primary))) left bottom / 0 2px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 0.35s cubic-bezier(0.65, 0, 0.2, 1);
+}
+.line-link:hover,
+.line-link:focus-visible,
+.line-link[aria-pressed='true'] { background-size: 100% 2px; }
+
+/* Ligne d'index : filet bleu qui se trace sous la ligne survolée */
+.index-row { position: relative; }
+.index-row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: hsl(var(--primary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.2, 1);
+}
+.index-row:hover::after,
+.index-row:focus-visible::after { transform: scaleX(1); }
+.index-row .index-title { transition: transform 0.35s cubic-bezier(0.65, 0, 0.2, 1); }
+.index-row:hover .index-title { transform: translateX(14px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .plan-bar,
+  .gantt-bar { transition: none; transform: translateY(-50%) scaleX(1); }
+  .plan-dot,
+  .gantt-ms { transition: none; transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+  .gantt-bar.is-current::after { animation: none; }
+  .line-link,
+  .index-row::after,
+  .index-row .index-title { transition: none; }
 }

@@ -1,88 +1,55 @@
-import { Download, Linkedin, Mail, MapPin } from 'lucide-react';
 import Section from '@/components/portfolio/Section';
-import Reveal from '@/components/portfolio/Reveal';
 import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile } from '@/data/portfolioContent';
 
 export default function Contact({ profile = defaultProfile, experiences }) {
-  const email = profile.email;
-  const linkedin = profile.linkedin;
+  const { email, linkedin, location } = profile;
+
+  const rows = [
+    email && { label: 'E-mail', value: email, href: `mailto:${email}` },
+    linkedin && { label: 'LinkedIn', value: 'Voir le profil', href: linkedin, external: true },
+    { label: 'Localisation', value: `${location}, mobilité et interventions sur site` },
+  ].filter(Boolean);
 
   return (
     <Section
       id="contact"
-      index="07"
-      eyebrow="Contact"
-      title="Vous avez un projet à structurer, une équipe à coordonner ou une transformation numérique à accompagner ?"
+      dark
+      title="Un projet à structurer, une équipe à coordonner ?"
       lead="Échangeons."
     >
-      <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
-        <Reveal className="bg-card">
-          <a
-            href={email ? `mailto:${email}` : '#contact'}
-            className="group flex h-full flex-col justify-between gap-8 p-7 transition-colors hover:bg-secondary/40"
-          >
-            <div className="flex items-center justify-between">
-              <Mail className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">E-mail</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium text-foreground transition-colors group-hover:text-primary">
-                {email || 'Adresse à renseigner'}
-              </p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Écrire un message</p>
-            </div>
-          </a>
-        </Reveal>
-
-        <Reveal delay={0.05} className="bg-card">
-          <a
-            href={linkedin || '#contact'}
-            target={linkedin ? '_blank' : undefined}
-            rel="noopener noreferrer"
-            className="group flex h-full flex-col justify-between gap-8 p-7 transition-colors hover:bg-secondary/40"
-          >
-            <div className="flex items-center justify-between">
-              <Linkedin className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">LinkedIn</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium text-foreground transition-colors group-hover:text-primary">
-                {linkedin ? 'Voir le profil' : 'Profil à renseigner'}
-              </p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Réseau professionnel</p>
-            </div>
-          </a>
-        </Reveal>
-
-        <Reveal delay={0.1} className="bg-card">
-          <div className="flex h-full flex-col justify-between gap-8 p-7">
-            <div className="flex items-center justify-between">
-              <MapPin className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Localisation</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium">{profile.location}</p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Mobilité et interventions sur site</p>
-            </div>
+      <dl className="border-t border-foreground">
+        {rows.map((row) => (
+          <div key={row.label} className="grid grid-cols-12 items-baseline gap-y-1 border-b border-border py-6">
+            <dt className="col-span-12 text-[14px] text-muted-foreground md:col-span-3">{row.label}</dt>
+            <dd className="col-span-12 text-[1.4rem] font-semibold tracking-[-0.02em] md:col-span-9 md:text-[2rem]">
+              {row.href ? (
+                <a
+                  href={row.href}
+                  className="line-link"
+                  target={row.external ? '_blank' : undefined}
+                  rel={row.external ? 'noopener noreferrer' : undefined}
+                >
+                  {row.value}
+                </a>
+              ) : (
+                row.value
+              )}
+            </dd>
           </div>
-        </Reveal>
-      </div>
+        ))}
+      </dl>
 
-      <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-primary/30 bg-primary/5 p-6 sm:flex-row sm:items-center md:p-8">
-        <div>
-          <p className="font-heading text-[16px] font-medium">Le parcours complet en une page</p>
-          <p className="mt-1 text-[13px] text-muted-foreground">
-            Expériences, expertises et environnement technique au format PDF.
-          </p>
-        </div>
+      <div className="mt-10 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+        <p className="max-w-[48ch] text-[16px] text-muted-foreground">
+          Le parcours complet en une page : expériences, expertises et environnement technique, au format PDF.
+        </p>
         <button
           type="button"
           onClick={() => downloadCv({ profile, experiences })}
-          className="inline-flex h-[44px] items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          className="h-12 bg-primary px-6 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary/85"
         >
-          <Download className="h-4 w-4" />
-          Télécharger mon CV
+          Télécharger le CV
         </button>
       </div>
     </Section>

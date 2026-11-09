@@ -6,22 +6,15 @@ const links = [
   { id: 'profil', label: 'Profil' },
   { id: 'expertises', label: 'Expertises' },
   { id: 'realisations', label: 'Réalisations' },
+  { id: 'references', label: 'Références' },
   { id: 'methode', label: 'Méthode' },
   { id: 'parcours', label: 'Parcours' },
   { id: 'contact', label: 'Contact' },
 ];
 
-export default function Nav() {
+export default function Nav({ profile }) {
   const [active, setActive] = useState('');
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,21 +33,21 @@ export default function Nav() {
   }, []);
 
   return (
-    <header
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300',
-        scrolled ? 'border-border/80 bg-background/90 backdrop-blur-md' : 'border-transparent bg-transparent'
-      )}
-    >
-      <div className="mx-auto flex h-[68px] w-full max-w-[1200px] items-center justify-between px-6 md:px-10">
-        <nav className="hidden items-center gap-7 lg:flex">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-foreground bg-background/95 backdrop-blur-sm">
+      <div className="calque-wrap flex h-[68px] items-center justify-between gap-6">
+        <a href="#top" className="text-[15px] font-semibold tracking-[-0.01em]">
+          {profile?.name || 'Anthony Gouvrillon'}
+        </a>
+
+        <nav className="hidden items-center gap-6 lg:flex">
           {links.map((link) => (
             <a
               key={link.id}
               href={`#${link.id}`}
+              aria-current={active === link.id ? 'true' : undefined}
               className={cn(
-                'relative text-[13px] font-medium tracking-[0.01em] transition-colors',
-                active === link.id ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                'line-link text-[14px] font-medium transition-colors',
+                active === link.id ? 'text-foreground [background-size:100%_2px]' : 'text-muted-foreground hover:text-foreground'
               )}
             >
               {link.label}
@@ -62,36 +55,26 @@ export default function Nav() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-3">
-          <a
-            href="#contact"
-            className="hidden h-[42px] items-center rounded-md border border-primary/50 px-5 text-[13px] font-medium text-primary transition-all hover:border-primary hover:bg-primary/10 sm:flex"
-          >
-            Me contacter
-          </a>
-          <button
-            type="button"
-            onClick={() => setOpen((value) => !value)}
-            aria-label="Ouvrir la navigation"
-            className="flex h-[42px] w-[42px] items-center justify-center rounded-md border border-border text-foreground transition-colors hover:border-primary/60 lg:hidden"
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-label={open ? 'Fermer la navigation' : 'Ouvrir la navigation'}
+          aria-expanded={open}
+          className="flex h-10 w-10 items-center justify-center border border-foreground lg:hidden"
+        >
+          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        </button>
       </div>
 
       {open && (
-        <div className="border-t border-border/80 bg-background/98 backdrop-blur-md lg:hidden">
-          <nav className="mx-auto flex w-full max-w-[1200px] flex-col px-6 py-2 md:px-10">
+        <div className="border-t border-foreground bg-background lg:hidden">
+          <nav className="calque-wrap flex flex-col">
             {links.map((link) => (
               <a
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={() => setOpen(false)}
-                className={cn(
-                  'border-b border-border/60 py-4 text-sm font-medium last:border-none',
-                  active === link.id ? 'text-primary' : 'text-foreground'
-                )}
+                className="border-b border-border py-4 text-[17px] font-semibold last:border-none"
               >
                 {link.label}
               </a>
