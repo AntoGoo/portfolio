@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 223 17% 8%;
+    --foreground: 210 17% 95%;
+    --card: 219 23% 14%;
+    --card-foreground: 210 17% 95%;
+    --popover: 219 23% 14%;
+    --popover-foreground: 210 17% 95%;
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 219 23% 17%;
+    --secondary-foreground: 210 17% 95%;
+    --muted: 219 20% 12%;
+    --muted-foreground: 218 12% 62%;
+    --accent: 217 89% 61%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 219 16% 20%;
+    --input: 219 16% 20%;
+    --ring: 217 89% 61%;
+    --radius: 0.75rem;
+    --font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sidebar-background: 219 23% 14%;
+    --sidebar-foreground: 210 17% 95%;
+    --sidebar-primary: 217 89% 61%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 219 23% 17%;
+    --sidebar-accent-foreground: 210 17% 95%;
+    --sidebar-border: 219 16% 20%;
+    --sidebar-ring: 217 89% 61%;
+  }
+
+  .dark {
+    --background: 223 17% 8%;
+    --foreground: 210 17% 95%;
+    --card: 219 23% 14%;
+    --card-foreground: 210 17% 95%;
+    --popover: 219 23% 14%;
+    --popover-foreground: 210 17% 95%;
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 219 23% 17%;
+    --secondary-foreground: 210 17% 95%;
+    --muted: 219 20% 12%;
+    --muted-foreground: 218 12% 62%;
+    --accent: 217 89% 61%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 219 16% 20%;
+    --input: 219 16% 20%;
+    --ring: 217 89% 61%;
+    --sidebar-background: 219 23% 14%;
+    --sidebar-foreground: 210 17% 95%;
+    --sidebar-primary: 217 89% 61%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 219 23% 17%;
+    --sidebar-accent-foreground: 210 17% 95%;
+    --sidebar-border: 219 16% 20%;
+    --sidebar-ring: 217 89% 61%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-background font-body text-foreground antialiased;
+  }
+
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
+  ::selection {
+    background-color: hsl(217 89% 61% / 0.28);
+    color: hsl(210 17% 98%);
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.55) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.55) 1px, transparent 1px);
+    background-size: 74px 74px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-page {
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(1150px 640px at 50% -10%, hsl(var(--primary) / 0.26), transparent 66%),
+      radial-gradient(950px 560px at 105% 16%, hsl(var(--primary) / 0.16), transparent 68%),
+      radial-gradient(820px 520px at -12% 60%, hsl(var(--primary) / 0.13), transparent 68%),
+      radial-gradient(900px 600px at 60% 108%, hsl(var(--primary) / 0.1), transparent 70%),
+      linear-gradient(180deg, hsl(219 30% 19%) 0%, hsl(219 24% 13%) 34%, hsl(var(--background)) 78%);
+  }
+}

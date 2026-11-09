@@ -1,0 +1,63 @@
+{
+  "name": "Experience",
+  "type": "object",
+  "properties": {
+    "company": {
+      "type": "string",
+      "title": "Entreprise"
+    },
+    "role": {
+      "type": "string",
+      "title": "Fonction"
+    },
+    "start": {
+      "type": "string",
+      "title": "D\u00e9but"
+    },
+    "end": {
+      "type": "string",
+      "title": "Fin"
+    },
+    "context": {
+      "type": "string",
+      "title": "Contexte"
+    },
+    "missions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Missions principales"
+    },
+    "published": {
+      "type": "boolean",
+      "default": true,
+      "title": "Publi\u00e9"
+    },
+    "order": {
+      "type": "number",
+      "title": "Ordre d'affichage"
+    }
+  },
+  "required": [
+    "role"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
