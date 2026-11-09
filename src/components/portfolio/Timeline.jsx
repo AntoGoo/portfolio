@@ -94,7 +94,7 @@ export default function Timeline({ experiences }) {
   return (
     <Section
       id="parcours"
-      index="06"
+      index="07"
       eyebrow="Parcours"
       title="Parcours professionnel"
       lead="Une progression continue, du développement à la conduite de projets."

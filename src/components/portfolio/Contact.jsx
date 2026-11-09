@@ -11,7 +11,7 @@ export default function Contact({ profile = defaultProfile, experiences }) {
   return (
     <Section
       id="contact"
-      index="07"
+      index="08"
       eyebrow="Contact"
       title="Vous avez un projet à structurer, une équipe à coordonner ou une transformation numérique à accompagner ?"
       lead="Échangeons."

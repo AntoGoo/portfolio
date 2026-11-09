@@ -6,7 +6,7 @@ export default function Skills() {
   return (
     <Section
       id="competences"
-      index="05"
+      index="06"
       eyebrow="Environnement"
       title="Outils et compétences pratiqués"
       lead="Un environnement de travail maîtrisé, du cadrage projet aux technologies et à l'intelligence artificielle appliquée."

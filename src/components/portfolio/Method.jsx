@@ -6,7 +6,7 @@ export default function Method() {
   return (
     <Section
       id="methode"
-      index="04"
+      index="05"
       eyebrow="Méthodologie"
       title="Une démarche agile en sept étapes"
     >

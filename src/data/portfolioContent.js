@@ -239,3 +239,11 @@ export const sampleExperiences = [
     ],
   },
 ];
+// Damier des références : clients et projets. Ajouter ici les clients réels
+// (nom affiché et domaine en une ligne).
+export const clients = [
+  { name: 'MASHUP', detail: 'Blind test en direct' },
+  { name: 'Facture Indé', detail: 'Devis et factures' },
+  { name: 'NaolibXT', detail: 'Mobilité, Nantes' },
+  { name: 'Propole', detail: 'IA appliquée' },
+];

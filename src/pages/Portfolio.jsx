@@ -4,6 +4,7 @@ import Hero from '@/components/portfolio/Hero';
 import About from '@/components/portfolio/About';
 import Expertises from '@/components/portfolio/Expertises';
 import Projects from '@/components/portfolio/Projects';
+import Clients from '@/components/portfolio/Clients';
 import Method from '@/components/portfolio/Method';
 import Skills from '@/components/portfolio/Skills';
 import Timeline from '@/components/portfolio/Timeline';
@@ -21,6 +22,7 @@ export default function Portfolio() {
         <About />
         <Expertises />
         <Projects projects={projects} />
+        <Clients />
         <Method />
         <Skills />
         <Timeline experiences={experiences} />
