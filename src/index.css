@@ -231,3 +231,12 @@
     }
   }
 }
+
+/* Aperçu au survol d'une réalisation sans visuel */
+@layer components {
+  .project-preview {
+    background-image:
+      radial-gradient(260px 180px at 100% 0%, hsl(var(--primary) / 0.32), transparent 70%),
+      linear-gradient(160deg, hsl(219 30% 19%), hsl(var(--card)));
+  }
+}
