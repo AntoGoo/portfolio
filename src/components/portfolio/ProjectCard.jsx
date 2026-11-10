@@ -30,7 +30,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
           {category ? (
             <span
               className={cn(
-                'flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.1em]',
+                'flex items-center gap-2.5 text-[12px] font-semibold',
                 categoryColor.text
               )}
             >
