@@ -42,7 +42,7 @@ export default function Expertises() {
                   'font-heading',
                   featured
                     ? 'text-[30px] font-extrabold leading-[1.1] tracking-[-0.02em] text-foreground'
-                    : 'text-[20px] font-bold leading-snug tracking-[-0.01em] text-primary'
+                    : 'text-[18px] font-bold leading-snug tracking-[-0.01em] text-primary'
                 )}
               >
                 {item.title}
