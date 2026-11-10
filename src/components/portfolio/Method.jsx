@@ -19,14 +19,14 @@ export default function Method() {
 
           {methodSteps.map((step, i) => (
             <Reveal key={step.number} delay={0.06 * i}>
-              <li className="group relative pl-11 md:pl-0">
-                <span className="absolute left-0 top-0 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background font-label text-[10px] text-primary shadow-sm transition-colors duration-300 group-hover:border-primary/60 group-hover:bg-primary/10 md:static md:mb-6 md:h-10 md:w-10 md:text-[10.5px]">
+              <li className="font-label group relative pl-11 md:pl-0">
+                <span className="absolute left-0 top-0 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-[10px] text-primary shadow-sm transition-colors duration-300 group-hover:border-primary/60 group-hover:bg-primary/10 md:static md:mb-6 md:h-10 md:w-10 md:text-[10.5px]">
                   {step.number}
                 </span>
-                <h3 className="font-heading text-[16.5px] font-semibold leading-snug tracking-[-0.01em] transition-colors duration-300 group-hover:text-primary md:mt-0 md:text-[15.5px]">
+                <h3 className="text-[16.5px] font-semibold leading-snug tracking-[-0.01em] transition-colors duration-300 group-hover:text-primary md:mt-0 md:text-[15.5px]">
                   {step.title}
                 </h3>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{step.text}</p>
+                <p className="mt-1.5 text-[13px] font-normal leading-relaxed text-muted-foreground">{step.text}</p>
               </li>
             </Reveal>
           ))}
