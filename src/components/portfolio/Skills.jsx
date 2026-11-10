@@ -1,6 +1,8 @@
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
+import { SECTION_LABEL, SECTION_LABEL_NAME } from '@/components/portfolio/styles';
 import { skillGroups } from '@/data/portfolioContent';
+import { cn } from '@/lib/utils';
 
 export default function Skills() {
   return (
@@ -15,7 +17,7 @@ export default function Skills() {
         {skillGroups.map((group, i) => (
           <Reveal key={group.label} delay={0.04 * i}>
             <div className="grid gap-4 py-6 md:grid-cols-12 md:items-center md:gap-8">
-              <h3 className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground md:col-span-4">
+              <h3 className={cn(SECTION_LABEL, SECTION_LABEL_NAME, 'md:col-span-4')}>
                 {group.label}
               </h3>
               <div className="flex flex-wrap gap-2 md:col-span-8">

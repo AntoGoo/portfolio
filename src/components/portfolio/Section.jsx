@@ -1,5 +1,6 @@
 import Reveal from '@/components/portfolio/Reveal';
 import { cn } from '@/lib/utils';
+import { SECTION_LABEL, SECTION_LABEL_NAME } from '@/components/portfolio/styles';
 
 // Point final ajouté aux titres texte qui ne se terminent pas déjà par une ponctuation.
 const withPeriod = (title) =>
@@ -9,9 +10,9 @@ const withPeriod = (title) =>
 // (titres des fiches projet).
 export function SectionLabel({ as: Tag = 'p', index, children, className }) {
   return (
-    <Tag className={cn('font-label text-[15px] leading-snug md:text-[17px]', className)}>
+    <Tag className={cn(SECTION_LABEL, className)}>
       <span className="font-medium text-accent2">{index} /</span>{' '}
-      <span className="font-normal text-muted-foreground">{children}</span>
+      <span className={SECTION_LABEL_NAME}>{children}</span>
     </Tag>
   );
 }
