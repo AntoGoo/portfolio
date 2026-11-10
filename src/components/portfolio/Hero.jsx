@@ -54,7 +54,7 @@ export default function Hero({ profile = defaultProfile, experiences }) {
           </Reveal>
 
           <Reveal delay={0.14}>
-            <p className="mt-7 text-[12px] font-medium uppercase tracking-[0.26em] text-primary">
+            <p className="font-label mt-7 text-[12px] font-medium uppercase tracking-[0.26em] text-primary">
               {profile.role}
             </p>
           </Reveal>

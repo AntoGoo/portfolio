@@ -27,7 +27,7 @@ export default function Timeline({ experiences }) {
               <li className="relative">
                 <span className="absolute -left-[33px] top-1.5 h-2.5 w-2.5 rounded-full border border-primary bg-background md:-left-[45px]" />
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <span className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-primary">
+                  <span className="font-label text-[10.5px] uppercase text-primary">
                     {[job.start, job.end].filter(Boolean).join(' — ')}
                   </span>
                   {job.company && (

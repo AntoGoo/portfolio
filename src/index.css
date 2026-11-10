@@ -150,3 +150,14 @@
       linear-gradient(to bottom, transparent 0%, #000 8%);
   }
 }
+
+/* Police des petits libellés, calée sur le label de section « 0X / Nom »
+   (Section.jsx) : seule source pour les numéros, dates et rôles. */
+@layer components {
+  .font-label {
+    font-family: var(--font-grotesk);
+    font-weight: 500;
+    letter-spacing: normal;
+    font-variant-numeric: tabular-nums;
+  }
+}
