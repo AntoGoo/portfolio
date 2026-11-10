@@ -48,7 +48,7 @@ export default function ProjectDrawer({ project, onClose }) {
             className="absolute right-0 top-0 flex h-full w-full max-w-xl flex-col overflow-y-auto border-l border-border bg-card"
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-6 py-4 backdrop-blur md:px-9">
-              <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              <span className="font-label text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                 {project.year || 'Réalisation'}
               </span>
               <button
