@@ -14,7 +14,7 @@ export default function Portfolio() {
   const { profile, projects, experiences } = usePortfolioData();
 
   return (
-    <div className="bg-page min-h-screen">
+    <div className="portfolio bg-page min-h-screen">
       <Nav profile={profile} />
       <main>
         <Hero profile={profile} experiences={experiences} />

@@ -44,6 +44,7 @@ module.exports = {
   			border: 'hsl(var(--border) / <alpha-value>)',
   			input: 'hsl(var(--input) / <alpha-value>)',
   			ring: 'hsl(var(--ring) / <alpha-value>)',
+  			accent2: 'hsl(var(--accent-2) / <alpha-value>)',
   			chart: {
   				'1': 'hsl(var(--chart-1) / <alpha-value>)',
   				'2': 'hsl(var(--chart-2) / <alpha-value>)',

@@ -18,6 +18,7 @@
     --muted-foreground: 218 12% 62%;
     --accent: 217 89% 61%;
     --accent-foreground: 0 0% 100%;
+    --accent-2: 40 87% 59%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     --border: 219 16% 20%;
@@ -54,6 +55,7 @@
     --muted-foreground: 218 12% 62%;
     --accent: 217 89% 61%;
     --accent-foreground: 0 0% 100%;
+    --accent-2: 40 87% 59%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
     --border: 219 16% 20%;
@@ -134,5 +136,14 @@
     font-family: var(--font-grotesk);
     font-weight: 500;
     letter-spacing: normal;
+  }
+}
+
+/* Focus clavier du site public en ambre. L'espace privé (composants shadcn)
+   garde --ring, en bleu. */
+@layer components {
+  .portfolio :is(a, button):focus-visible {
+    outline: 2px solid hsl(var(--accent-2));
+    outline-offset: 2px;
   }
 }

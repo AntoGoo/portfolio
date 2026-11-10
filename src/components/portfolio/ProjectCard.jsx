@@ -1,10 +1,8 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { tagColor } from '@/lib/tagStyle';
 
 export default function ProjectCard({ project, featured, onOpen }) {
   const category = (project.year || '').trim();
-  const categoryColor = category ? tagColor(category) : null;
   // La catégorie est déjà affichée en haut de la carte : pas de doublon dans les tags.
   const tags = (project.tags || []).filter((tag) => tag.trim().toLowerCase() !== category.toLowerCase());
   // Pas de champ client : on prend ce qui suit le tiret du titre (« Projet GED — Dalkia »).
@@ -23,19 +21,14 @@ export default function ProjectCard({ project, featured, onOpen }) {
         type="button"
         onClick={onOpen}
         aria-label={`Ouvrir la fiche : ${project.title}`}
-        className="absolute inset-0 z-0 cursor-pointer"
+        className="absolute inset-0 z-0 cursor-pointer rounded-xl focus-visible:-outline-offset-2"
       />
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex min-h-9 items-start justify-between gap-4">
           {category ? (
-            <span
-              className={cn(
-                'flex items-center gap-2.5 text-[12px] font-semibold',
-                categoryColor.text
-              )}
-            >
-              <span aria-hidden="true" className={cn('h-2 w-2 shrink-0 rounded-[2px]', categoryColor.dot)} />
+            <span className="flex items-center gap-2.5 text-[12px] font-semibold text-foreground">
+              <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-[2px] bg-accent2" />
               {category}
             </span>
           ) : (

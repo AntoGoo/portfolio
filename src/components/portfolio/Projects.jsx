@@ -4,7 +4,6 @@ import Reveal from '@/components/portfolio/Reveal';
 import ProjectCard from '@/components/portfolio/ProjectCard';
 import ProjectDrawer from '@/components/portfolio/ProjectDrawer';
 import { cn } from '@/lib/utils';
-import { tagColor } from '@/lib/tagStyle';
 
 export default function Projects({ projects }) {
   const [active, setActive] = useState(null);
@@ -50,7 +49,6 @@ export default function Projects({ projects }) {
             <div className="flex flex-wrap gap-x-2 border-b border-border font-grotesk">
               {[null, ...types].map((type) => {
                 const isActive = filter === type;
-                const color = type ? tagColor(type) : { dot: 'bg-foreground', line: 'border-foreground' };
                 return (
                   <button
                     key={type || 'all'}
@@ -60,11 +58,17 @@ export default function Projects({ projects }) {
                     className={cn(
                       '-mb-px flex min-h-[44px] items-center gap-2 border-b-2 px-3.5 text-[14px] transition-colors',
                       isActive
-                        ? cn('font-semibold text-foreground', color.line)
+                        ? 'border-foreground font-semibold text-foreground'
                         : 'border-transparent font-medium text-muted-foreground hover:text-foreground'
                     )}
                   >
-                    <span aria-hidden="true" className={cn('h-2 w-2 shrink-0 rounded-[2px]', color.dot)} />
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        'h-2 w-2 shrink-0 rounded-[2px]',
+                        isActive ? 'bg-accent2' : 'border border-muted-foreground'
+                      )}
+                    />
                     {type || 'Tous'}
                   </button>
                 );

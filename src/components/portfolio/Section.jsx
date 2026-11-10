@@ -10,7 +10,7 @@ const withPeriod = (title) =>
 export function SectionLabel({ as: Tag = 'p', index, children, className }) {
   return (
     <Tag className={cn('font-label text-[15px] leading-snug md:text-[17px]', className)}>
-      <span className="font-medium text-primary">{index} /</span>{' '}
+      <span className="font-medium text-accent2">{index} /</span>{' '}
       <span className="font-normal text-muted-foreground">{children}</span>
     </Tag>
   );
@@ -32,8 +32,8 @@ export default function Section({ id, index, eyebrow, title, lead, children, cla
             ) : (
               <>
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] font-semibold tracking-[0.24em] text-primary">{index}</span>
-                  <span className="h-px w-8 bg-primary/50" />
+                  <span className="text-[11px] font-semibold tracking-[0.24em] text-accent2">{index}</span>
+                  <span className="h-px w-8 bg-accent2/50" />
                   <span className="text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{eyebrow}</span>
                 </div>
                 <h2 className="mt-5 max-w-[26ch] font-heading text-[1.75rem] font-semibold leading-[1.12] tracking-[-0.02em] md:text-[2.2rem]">

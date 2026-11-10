@@ -54,9 +54,13 @@ export default function Nav() {
               href={`#${link.id}`}
               className={cn(
                 'relative text-[13px] font-medium tracking-[0.01em] transition-colors',
-                active === link.id ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                active === link.id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >
+              {active === link.id && (
+                // Hors du flux (dans l'espace entre les liens) : le menu ne bouge pas au défilement.
+                <span aria-hidden="true" className="absolute -left-3 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-[2px] bg-accent2" />
+              )}
               {link.label}
             </a>
           ))}
@@ -88,11 +92,9 @@ export default function Nav() {
                 key={link.id}
                 href={`#${link.id}`}
                 onClick={() => setOpen(false)}
-                className={cn(
-                  'border-b border-border/60 py-4 text-sm font-medium last:border-none',
-                  active === link.id ? 'text-primary' : 'text-foreground'
-                )}
+                className="flex items-center gap-2.5 border-b border-border/60 py-4 text-sm font-medium text-foreground last:border-none"
               >
+                {active === link.id && <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-[2px] bg-accent2" />}
                 {link.label}
               </a>
             ))}
