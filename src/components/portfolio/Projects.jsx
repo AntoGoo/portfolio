@@ -3,7 +3,8 @@ import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import ProjectCard from '@/components/portfolio/ProjectCard';
 import ProjectDrawer from '@/components/portfolio/ProjectDrawer';
-import { tagStyle } from '@/lib/tagStyle';
+import { cn } from '@/lib/utils';
+import { tagColor } from '@/lib/tagStyle';
 
 export default function Projects({ projects }) {
   const [active, setActive] = useState(null);
@@ -46,25 +47,24 @@ export default function Projects({ projects }) {
       ) : (
         <div className="space-y-8">
           {types.length > 0 && (
-            <div className="flex flex-wrap gap-2 font-grotesk">
+            <div className="flex flex-wrap gap-x-2 border-b border-border font-grotesk">
               {[null, ...types].map((type) => {
                 const isActive = filter === type;
+                const color = type ? tagColor(type) : { dot: 'bg-foreground', line: 'border-foreground' };
                 return (
                   <button
                     key={type || 'all'}
                     type="button"
                     onClick={() => setFilter(type)}
                     aria-pressed={isActive}
-                    className={
-                      type
-                        ? `${tagStyle(type)} rounded-full border px-3.5 py-1.5 text-[12px] font-medium transition-all ${
-                            isActive ? 'opacity-100 ring-1 ring-current' : 'opacity-75 hover:opacity-100'
-                          }`
-                        : isActive
-                          ? 'rounded-full border border-primary bg-primary/15 px-3.5 py-1.5 text-[12px] font-medium text-primary transition-colors'
-                          : 'rounded-full border border-border px-3.5 py-1.5 text-[12px] font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground'
-                    }
+                    className={cn(
+                      '-mb-px flex min-h-[44px] items-center gap-2 border-b-2 px-3.5 text-[14px] transition-colors',
+                      isActive
+                        ? cn('font-semibold text-foreground', color.line)
+                        : 'border-transparent font-medium text-muted-foreground hover:text-foreground'
+                    )}
                   >
+                    <span aria-hidden="true" className={cn('h-2 w-2 shrink-0 rounded-[2px]', color.dot)} />
                     {type || 'Tous'}
                   </button>
                 );

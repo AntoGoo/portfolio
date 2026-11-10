@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { tagStyle } from '@/lib/tagStyle';
+import { SectionLabel } from '@/components/portfolio/Section';
 
 const blocks = [
   { key: 'context', label: 'Contexte' },
@@ -81,14 +82,16 @@ export default function ProjectDrawer({ project, onClose }) {
               </div>
 
               <div className="mt-9 space-y-7">
-                {blocks.map((block) =>
-                  project[block.key] ? (
+                {blocks
+                  .filter((block) => project[block.key])
+                  .map((block, i) => (
                     <div key={block.key}>
-                      <h4 className="text-[10px] uppercase tracking-[0.2em] text-primary/85">{block.label}</h4>
+                      <SectionLabel as="h4" index={String(i + 1).padStart(2, '0')}>
+                        {block.label}
+                      </SectionLabel>
                       <p className="mt-2 text-[14.5px] leading-relaxed text-foreground/85">{project[block.key]}</p>
                     </div>
-                  ) : null
-                )}
+                  ))}
               </div>
 
               {project.link && (

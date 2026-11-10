@@ -1,9 +1,14 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Image } from '@/components/ui/image';
-import { tagStyle } from '@/lib/tagStyle';
+import { tagColor } from '@/lib/tagStyle';
 
 export default function ProjectCard({ project, featured, onOpen }) {
+  const category = (project.year || '').trim();
+  const categoryColor = category ? tagColor(category) : null;
+  // La catégorie est déjà affichée en haut de la carte : pas de doublon dans les tags.
+  const tags = (project.tags || []).filter((tag) => tag.trim().toLowerCase() !== category.toLowerCase());
+
   return (
     <article
       className={cn(
@@ -22,14 +27,15 @@ export default function ProjectCard({ project, featured, onOpen }) {
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex items-center justify-between gap-3">
-          {project.year ? (
+          {category ? (
             <span
               className={cn(
-                'rounded-full border px-2.5 py-1 font-grotesk text-[10px] font-medium uppercase tracking-[0.14em]',
-                tagStyle(project.year)
+                'flex items-center gap-2.5 text-[12px] font-semibold uppercase tracking-[0.1em]',
+                categoryColor.text
               )}
             >
-              {project.year}
+              <span aria-hidden="true" className={cn('h-2 w-2 shrink-0 rounded-[2px]', categoryColor.dot)} />
+              {category}
             </span>
           ) : (
             <span aria-hidden="true" />
@@ -43,7 +49,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
 
         <h3
           className={cn(
-            'mt-5 font-semibold leading-[1.15] tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary',
+            'mt-5 font-semibold leading-[1.15] tracking-[-0.02em] text-foreground',
             featured ? 'text-[22px] md:text-[24px]' : 'text-[19px]'
           )}
         >
@@ -55,19 +61,16 @@ export default function ProjectCard({ project, featured, onOpen }) {
         </p>
 
         <div className="mt-auto pt-7">
-          <div className="flex flex-wrap gap-1.5">
-            {(project.tags || []).map((tag) => (
-              <span
-                key={tag}
-                className={cn(
-                  'rounded border px-2 py-1 text-[10.5px] uppercase tracking-[0.1em]',
-                  tagStyle(tag)
-                )}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          {tags.length > 0 && (
+            <ul className="flex flex-wrap gap-x-[18px] gap-y-2">
+              {tags.map((tag) => (
+                <li key={tag} className="flex items-center gap-2 text-[13px] text-foreground/75">
+                  <span aria-hidden="true" className="h-[5px] w-[5px] shrink-0 rounded-[1px] bg-foreground" />
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
             <span className="flex items-center gap-2 text-[12px] font-medium text-foreground/70 transition-colors group-hover:text-foreground">
               Ouvrir la fiche

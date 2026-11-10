@@ -5,6 +5,17 @@ import { cn } from '@/lib/utils';
 const withPeriod = (title) =>
   typeof title === 'string' && !/[.!?…:]$/.test(title.trim()) ? `${title.trim()}.` : title;
 
+// Libellé « NN / Nom » des en-têtes de section, repris tel quel ailleurs
+// (titres des fiches projet).
+export function SectionLabel({ as: Tag = 'p', index, children, className }) {
+  return (
+    <Tag className={cn('font-label text-[15px] leading-snug md:text-[17px]', className)}>
+      <span className="font-medium text-primary">{index} /</span>{' '}
+      <span className="font-normal text-muted-foreground">{children}</span>
+    </Tag>
+  );
+}
+
 export default function Section({ id, index, eyebrow, title, lead, children, className }) {
   return (
     <section id={id} className={cn('border-t border-border/70 py-20 md:py-28', className)}>
@@ -13,10 +24,7 @@ export default function Section({ id, index, eyebrow, title, lead, children, cla
           <header className="border-b border-border/70 pb-8 md:pb-10">
             {index ? (
               <div className="font-grotesk">
-                <p className="font-label text-[15px] leading-snug md:text-[17px]">
-                  <span className="font-medium text-primary">{index} /</span>{' '}
-                  <span className="font-normal text-muted-foreground">{eyebrow}</span>
-                </p>
+                <SectionLabel index={index}>{eyebrow}</SectionLabel>
                 <h2 className="mt-3.5 text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.035em] md:text-[2.5rem]">
                   {withPeriod(title)}
                 </h2>

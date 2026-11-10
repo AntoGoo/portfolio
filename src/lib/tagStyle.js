@@ -7,6 +7,17 @@ const PALETTE = [
   'border-rose-500/45 bg-rose-500/10 text-rose-300',
 ];
 
+// Même ordre que PALETTE : couleur seule, pour les pastilles (carré), le texte
+// et le soulignement des filtres.
+const COLORS = [
+  { dot: 'bg-primary', text: 'text-primary', line: 'border-primary' },
+  { dot: 'bg-violet-300', text: 'text-violet-300', line: 'border-violet-300' },
+  { dot: 'bg-emerald-300', text: 'text-emerald-300', line: 'border-emerald-300' },
+  { dot: 'bg-amber-300', text: 'text-amber-300', line: 'border-amber-300' },
+  { dot: 'bg-sky-300', text: 'text-sky-300', line: 'border-sky-300' },
+  { dot: 'bg-rose-300', text: 'text-rose-300', line: 'border-rose-300' },
+];
+
 const normalize = (tag) =>
   tag
     .toLowerCase()
@@ -40,8 +51,15 @@ const hash = (value) => {
   return total;
 };
 
-export function tagStyle(tag) {
+const paletteIndex = (tag) => {
   const key = normalize(tag);
-  const index = KEYWORDS[key] ?? hash(key) % PALETTE.length;
-  return PALETTE[index];
+  return KEYWORDS[key] ?? hash(key) % PALETTE.length;
+};
+
+export function tagStyle(tag) {
+  return PALETTE[paletteIndex(tag)];
+}
+
+export function tagColor(tag) {
+  return COLORS[paletteIndex(tag)];
 }
