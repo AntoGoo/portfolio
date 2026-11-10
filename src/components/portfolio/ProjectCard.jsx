@@ -7,7 +7,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
   return (
     <article
       className={cn(
-        'group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 md:p-7',
+        'group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card p-6 font-grotesk transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/45 md:p-7',
         featured && 'md:p-9'
       )}
     >
@@ -23,14 +23,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex items-center justify-between gap-3">
           {project.year ? (
-            <span
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.14em]',
-                tagStyle(project.year)
-              )}
-            >
-              {project.year}
-            </span>
+            <span className="text-[11px] font-medium text-primary">{project.year}</span>
           ) : (
             <span aria-hidden="true" />
           )}
@@ -43,14 +36,14 @@ export default function ProjectCard({ project, featured, onOpen }) {
 
         <h3
           className={cn(
-            'mt-5 font-heading font-semibold leading-snug tracking-[-0.015em] text-foreground transition-colors group-hover:text-primary',
-            featured ? 'text-[22px] md:text-[26px]' : 'text-[18px]'
+            'mt-5 font-semibold leading-[1.15] tracking-[-0.02em] text-foreground transition-colors group-hover:text-primary',
+            featured ? 'text-[22px] md:text-[24px]' : 'text-[19px]'
           )}
         >
           {project.title}
         </h3>
 
-        <p className="mt-3 line-clamp-3 text-[13.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-3 line-clamp-3 text-[13px] font-normal leading-[1.55] text-muted-foreground">
           {project.context}
         </p>
 
