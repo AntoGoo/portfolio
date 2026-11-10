@@ -8,7 +8,7 @@ const FALLBACK_PORTRAIT = '/images/portrait.webp';
 export default function Hero({ profile = defaultProfile, experiences }) {
   const [firstName, ...rest] = profile.name.split(' ');
   const portrait = profile.photoUrl || profile.photo_url || FALLBACK_PORTRAIT;
-  const roleLine = [profile.role, profile.location?.trim()].filter(Boolean).join(' – ');
+  const location = profile.location?.trim();
   const portraitProps = {
     src: portrait,
     alt: profile.name,
@@ -47,7 +47,16 @@ export default function Hero({ profile = defaultProfile, experiences }) {
           </Reveal>
 
           <Reveal delay={0.14}>
-            <p className="font-label mt-7 text-[15px] text-accent2 md:text-[17px]">{roleLine}</p>
+            <p className="font-label mt-7 text-[15px] text-accent2 md:text-[17px]">
+              {profile.role}
+              {location && (
+                <>
+                  {profile.role && ' – '}
+                  {/* Couleur du libellé des en-têtes de section (« Profil », SECTION_LABEL_NAME). */}
+                  <span className="text-muted-foreground">{location}</span>
+                </>
+              )}
+            </p>
           </Reveal>
 
           <Reveal delay={0.2}>
