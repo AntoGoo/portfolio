@@ -34,8 +34,8 @@ export default function Timeline({ experiences }) {
                   className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-primary md:-left-[45px] md:top-[7px]"
                 />
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  {/* Typo du libellé d'en-tête (graisse de « Parcours »), couleur propre aux dates. */}
-                  <span className={cn(SECTION_LABEL, 'font-normal text-primary')}>
+                  {/* Typo du libellé d'en-tête (graisse de « Parcours »), dates en blanc. */}
+                  <span className={cn(SECTION_LABEL, 'font-normal text-foreground')}>
                     {[job.start, job.end].filter(Boolean).join(' — ')}
                   </span>
                   {job.company && (
