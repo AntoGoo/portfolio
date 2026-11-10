@@ -1,6 +1,5 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Image } from '@/components/ui/image';
 import { tagColor } from '@/lib/tagStyle';
 
 export default function ProjectCard({ project, featured, onOpen }) {
@@ -8,6 +7,8 @@ export default function ProjectCard({ project, featured, onOpen }) {
   const categoryColor = category ? tagColor(category) : null;
   // La catégorie est déjà affichée en haut de la carte : pas de doublon dans les tags.
   const tags = (project.tags || []).filter((tag) => tag.trim().toLowerCase() !== category.toLowerCase());
+  // Pas de champ client : on prend ce qui suit le tiret du titre (« Projet GED — Dalkia »).
+  const client = project.title?.split(' — ').pop()?.trim() || 'Logo client';
 
   return (
     <article
@@ -26,7 +27,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
       />
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex min-h-9 items-start justify-between gap-4">
           {category ? (
             <span
               className={cn(
@@ -41,9 +42,14 @@ export default function ProjectCard({ project, featured, onOpen }) {
             <span aria-hidden="true" />
           )}
           {project.logo_url && (
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-border/70 bg-background/40 p-1.5">
-              <Image src={project.logo_url} alt="" className="h-full w-full" fittingType="fit" />
-            </span>
+            // Logo ramené en blanc uni quel que soit le fichier : sans effet sur un
+            // logo déjà blanc et détouré, indispensable pour un logo en couleur.
+            <img
+              src={project.logo_url}
+              alt={client}
+              loading="lazy"
+              className="h-9 w-auto max-w-[96px] shrink-0 object-contain object-right-top brightness-0 invert sm:max-w-[110px]"
+            />
           )}
         </div>
 
