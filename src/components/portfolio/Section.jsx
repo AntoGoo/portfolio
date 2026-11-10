@@ -17,6 +17,19 @@ export function SectionLabel({ as: Tag = 'p', index, children, className }) {
   );
 }
 
+// Libellé « NN / Nom » et titre d'une section numérotée, sans filet ni marge :
+// repris par Contact, qui place l'en-tête dans sa colonne gauche.
+export function SectionHeading({ index, eyebrow, title }) {
+  return (
+    <div className="font-grotesk">
+      <SectionLabel index={index}>{eyebrow}</SectionLabel>
+      <h2 className="mt-3.5 text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.035em] md:text-[2.5rem]">
+        {withPeriod(title)}
+      </h2>
+    </div>
+  );
+}
+
 export default function Section({ id, index, eyebrow, title, lead, children, className }) {
   return (
     <section id={id} className={cn('border-t border-border/70 py-20 md:py-28', className)}>
@@ -24,12 +37,7 @@ export default function Section({ id, index, eyebrow, title, lead, children, cla
         <Reveal>
           <header className="border-b border-border/70 pb-8 md:pb-10">
             {index ? (
-              <div className="font-grotesk">
-                <SectionLabel index={index}>{eyebrow}</SectionLabel>
-                <h2 className="mt-3.5 text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.035em] md:text-[2.5rem]">
-                  {withPeriod(title)}
-                </h2>
-              </div>
+              <SectionHeading index={index} eyebrow={eyebrow} title={title} />
             ) : (
               <>
                 <div className="flex items-center gap-3">

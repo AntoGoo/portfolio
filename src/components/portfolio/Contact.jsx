@@ -1,90 +1,107 @@
-import { Download, Linkedin, Mail, MapPin } from 'lucide-react';
-import Section from '@/components/portfolio/Section';
+import { useEffect, useRef, useState } from 'react';
+import { Download } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
+import { SectionHeading } from '@/components/portfolio/Section';
 import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile } from '@/data/portfolioContent';
+
+function ContactBlock({ label, children, note }) {
+  return (
+    <div className="px-7 py-[26px]">
+      <p className="flex items-center gap-2.5 font-heading text-[14px] font-medium text-muted-foreground">
+        <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-primary" />
+        {label}
+      </p>
+      <div className="mt-2.5">{children}</div>
+      <p className="mt-1.5 text-[14px] text-muted-foreground">{note}</p>
+    </div>
+  );
+}
+
+const valueClass = 'font-heading text-[22px] font-semibold leading-snug text-foreground';
 
 export default function Contact({ profile = defaultProfile, experiences }) {
   const email = profile.email;
   const linkedin = profile.linkedin;
+  const [copied, setCopied] = useState(false);
+  const timer = useRef(null);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Presse-papiers refusé ou indisponible : le lien mailto reste là.
+    }
+  };
 
   return (
-    <Section
-      id="contact"
-      index="07"
-      eyebrow="Contact"
-      title="Vous avez un projet à structurer, une équipe à coordonner ou une transformation numérique à accompagner ?"
-      lead="Échangeons."
-    >
-      <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border/60 sm:grid-cols-2 lg:grid-cols-3">
-        <Reveal className="bg-card">
-          <a
-            href={email ? `mailto:${email}` : '#contact'}
-            className="group flex h-full flex-col justify-between gap-8 p-7 transition-colors hover:bg-secondary/40"
+    <section id="contact" className="border-t border-border/70 py-20 md:py-28">
+      <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-6 md:px-10 lg:grid-cols-[1.15fr_1fr] lg:items-start lg:gap-20">
+        <Reveal>
+          <SectionHeading index="07" eyebrow="Contact" title={'Un projet à concrétiser ? Échangeons ensemble.'} />
+          <button
+            type="button"
+            onClick={() => downloadCv({ profile, experiences })}
+            className="mt-12 inline-flex h-[54px] w-full items-center justify-center gap-2.5 rounded-[6px] border border-primary px-7 text-[16px] font-medium text-primary transition-colors hover:bg-primary/10 md:w-auto"
           >
-            <div className="flex items-center justify-between">
-              <Mail className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">E-mail</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium text-foreground transition-colors group-hover:text-primary">
-                {email || 'Adresse à renseigner'}
-              </p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Écrire un message</p>
-            </div>
-          </a>
+            <Download className="h-[18px] w-[18px]" />
+            Télécharger mon CV
+          </button>
         </Reveal>
 
-        <Reveal delay={0.05} className="bg-card">
-          <a
-            href={linkedin || '#contact'}
-            target={linkedin ? '_blank' : undefined}
-            rel="noopener noreferrer"
-            className="group flex h-full flex-col justify-between gap-8 p-7 transition-colors hover:bg-secondary/40"
-          >
-            <div className="flex items-center justify-between">
-              <Linkedin className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">LinkedIn</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium text-foreground transition-colors group-hover:text-primary">
-                {linkedin ? 'Voir le profil' : 'Profil à renseigner'}
-              </p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Réseau professionnel</p>
-            </div>
-          </a>
-        </Reveal>
+        <Reveal delay={0.05}>
+          <div className="divide-y divide-border rounded-[10px] border border-border bg-card">
+            <ContactBlock label="E-mail" note="Écrire un message">
+              <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+                <a
+                  href={email ? `mailto:${email}` : '#contact'}
+                  className={`${valueClass} min-w-0 transition-colors [overflow-wrap:anywhere] hover:text-primary`}
+                >
+                  {/* Sur petit écran, l'adresse passe à la ligne après « @ » plutôt qu'en plein mot. */}
+                  {email ? (
+                    <>
+                      {email.slice(0, email.indexOf('@') + 1)}
+                      <wbr />
+                      {email.slice(email.indexOf('@') + 1)}
+                    </>
+                  ) : (
+                    'Adresse à renseigner'
+                  )}
+                </a>
+                {email && (
+                  <button
+                    type="button"
+                    onClick={copyEmail}
+                    className="h-10 shrink-0 rounded-md border border-border px-4 text-[13px] text-muted-foreground transition-colors hover:border-muted-foreground/60 hover:text-foreground"
+                  >
+                    <span aria-live="polite">{copied ? 'Copié' : 'Copier'}</span>
+                  </button>
+                )}
+              </div>
+            </ContactBlock>
 
-        <Reveal delay={0.1} className="bg-card">
-          <div className="flex h-full flex-col justify-between gap-8 p-7">
-            <div className="flex items-center justify-between">
-              <MapPin className="h-5 w-5 text-primary" strokeWidth={1.6} />
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Localisation</span>
-            </div>
-            <div>
-              <p className="font-heading text-[15px] font-medium">{profile.location}</p>
-              <p className="mt-1 text-[12.5px] text-muted-foreground">Mobilité et interventions sur site</p>
-            </div>
+            <ContactBlock label="LinkedIn" note="Réseau professionnel">
+              <a
+                href={linkedin || '#contact'}
+                target={linkedin ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                className={`${valueClass} transition-colors hover:text-primary`}
+              >
+                {linkedin ? 'Voir le profil ↗' : 'Profil à renseigner'}
+              </a>
+            </ContactBlock>
+
+            <ContactBlock label="Localisation" note="Mobilité et interventions sur site">
+              <p className={valueClass}>{profile.location}</p>
+            </ContactBlock>
           </div>
         </Reveal>
       </div>
-
-      <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-xl border border-primary/30 bg-primary/5 p-6 sm:flex-row sm:items-center md:p-8">
-        <div>
-          <p className="font-heading text-[16px] font-medium">Le parcours complet en une page</p>
-          <p className="mt-1 text-[13px] text-muted-foreground">
-            Expériences, expertises et environnement technique au format PDF.
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => downloadCv({ profile, experiences })}
-          className="inline-flex h-[44px] items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-        >
-          <Download className="h-4 w-4" />
-          Télécharger mon CV
-        </button>
-      </div>
-    </Section>
+    </section>
   );
 }
