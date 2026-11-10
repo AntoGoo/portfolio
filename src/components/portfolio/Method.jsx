@@ -39,7 +39,7 @@ export default function Method() {
               aria-hidden="true"
               className={cn('absolute left-0 top-1 hidden h-px bg-[#3A414D] md:block', railEnd(i, methodSteps.length))}
             />
-            <span aria-hidden="true" className="absolute left-0 top-[14px] h-[9px] w-[9px] bg-accent2 md:relative md:top-0 md:block" />
+            <span aria-hidden="true" className="absolute left-0 top-[14px] h-[9px] w-[9px] bg-primary md:relative md:top-0 md:block" />
 
             <Reveal delay={0.06 * i} y={reduceMotion ? 0 : undefined}>
               <span className="block text-[36px] font-medium leading-none tracking-[-0.03em] text-foreground tabular-nums md:mt-7 md:text-[52px]">
