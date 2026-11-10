@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { navLinks as links } from '@/data/portfolioContent';
 import { cn } from '@/lib/utils';
-
-const links = [
-  { id: 'profil', label: 'Profil' },
-  { id: 'expertises', label: 'Expertises' },
-  { id: 'realisations', label: 'Réalisations' },
-  { id: 'methode', label: 'Méthode' },
-  { id: 'parcours', label: 'Parcours' },
-  { id: 'contact', label: 'Contact' },
-];
 
 export default function Nav() {
   const [active, setActive] = useState('');

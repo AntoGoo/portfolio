@@ -15,6 +15,17 @@ export const profile = {
   cvUrl: '',
 };
 
+// Sections du menu du haut et du footer, dans l'ordre de la page.
+export const navLinks = [
+  { id: 'profil', label: 'Profil' },
+  { id: 'expertises', label: 'Expertises' },
+  { id: 'realisations', label: 'Réalisations' },
+  { id: 'methode', label: 'Méthode' },
+  { id: 'competences', label: 'Environnement' },
+  { id: 'parcours', label: 'Parcours' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export const expertises = [
   {
     key: 'projet',

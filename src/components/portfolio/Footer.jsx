@@ -1,12 +1,7 @@
-import { profile as defaultProfile } from '@/data/portfolioContent';
+import { navLinks, profile as defaultProfile } from '@/data/portfolioContent';
 
-const links = [
-  { id: 'profil', label: 'Profil' },
-  { id: 'expertises', label: 'Expertises' },
-  { id: 'realisations', label: 'Réalisations' },
-  { id: 'methode', label: 'Méthode' },
-  { id: 'parcours', label: 'Parcours' },
-];
+// Contact est la section juste au-dessus du footer : pas de lien vers elle.
+const links = navLinks.filter((link) => link.id !== 'contact');
 
 export default function Footer({ profile = defaultProfile }) {
   return (
