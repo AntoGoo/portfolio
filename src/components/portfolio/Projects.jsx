@@ -10,24 +10,24 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { cn } from '@/lib/utils';
 
 // Au-delà de ce nombre de projets visibles, la grille devient un carrousel.
-const GRID_MAX = 9;
+const GRID_MAX = 6;
 
-// Cartes par vue du carrousel, aux mêmes points de rupture que la grille (sm, lg).
+// Cartes par page du carrousel : 3 × 2 en lg, 2 × 2 en sm, une seule en mobile.
 const BREAKPOINTS = ['(min-width: 1024px)', '(min-width: 640px)'];
-const readPerView = () => {
+const readPageSize = () => {
   const [lg, sm] = BREAKPOINTS.map((query) => window.matchMedia(query).matches);
-  return lg ? 3 : sm ? 2 : 1;
+  return lg ? 6 : sm ? 4 : 1;
 };
 
-function usePerView() {
-  const [perView, setPerView] = useState(readPerView);
+function usePageSize() {
+  const [pageSize, setPageSize] = useState(readPageSize);
   useEffect(() => {
     const lists = BREAKPOINTS.map((query) => window.matchMedia(query));
-    const onChange = () => setPerView(readPerView());
+    const onChange = () => setPageSize(readPageSize());
     lists.forEach((mql) => mql.addEventListener('change', onChange));
     return () => lists.forEach((mql) => mql.removeEventListener('change', onChange));
   }, []);
-  return perView;
+  return pageSize;
 }
 
 function useCarouselState(api) {
@@ -54,7 +54,7 @@ export default function Projects({ projects }) {
   const [active, setActive] = useState(null);
   const [filter, setFilter] = useState(null);
   const [carouselApi, setCarouselApi] = useState(null);
-  const perView = usePerView();
+  const pageSize = usePageSize();
   const reduceMotion = useReducedMotion();
   const list = projects || [];
 
@@ -73,14 +73,17 @@ export default function Projects({ projects }) {
     : list;
   const isCarousel = visible.length > GRID_MAX;
 
-  // Une vue complète par défilement ; saut direct si le mouvement est réduit.
-  const carouselOpts = useMemo(
-    () => ({ align: 'start', slidesToScroll: 'auto', containScroll: 'trimSnaps', duration: reduceMotion ? 0 : 25 }),
-    [reduceMotion]
-  );
+  // Une page par slide ; saut direct si le mouvement est réduit.
+  const carouselOpts = useMemo(() => ({ align: 'start', duration: reduceMotion ? 0 : 25 }), [reduceMotion]);
+  const pages = useMemo(() => {
+    const out = [];
+    for (let i = 0; i < visible.length; i += pageSize) out.push(visible.slice(i, i + pageSize));
+    return out;
+  }, [visible, pageSize]);
   const { index, canPrev, canNext } = useCarouselState(isCarousel ? carouselApi : null);
-  const first = Math.max(0, Math.min(index * perView, visible.length - perView));
-  const last = Math.min(first + perView, visible.length);
+  // Borné : au changement de taille de page, l'ancien index peut survivre un instant.
+  const first = Math.min(index * pageSize, Math.max(0, visible.length - 1));
+  const last = Math.min(first + pageSize, visible.length);
   const counter = `${pad(first + 1)}${last > first + 1 ? `–${pad(last)}` : ''} / ${pad(visible.length)}`;
 
   const chooseFilter = (type) => {
@@ -182,11 +185,23 @@ export default function Projects({ projects }) {
             <Reveal>
               {/* Les flèches clavier sont gérées par Carousel, tant que le focus est dedans.
                   Un glisser ne déclenche pas le clic d'une carte (Embla l'annule). */}
-              <Carousel key={filter || 'all'} opts={carouselOpts} setApi={setCarouselApi} aria-label="Réalisations" className="-mt-0.5">
+              {/* Remonté quand le filtre ou la taille de page change : retour à la première page. */}
+              <Carousel
+                key={`${filter || 'all'}-${pageSize}`}
+                opts={carouselOpts}
+                setApi={setCarouselApi}
+                aria-label="Réalisations"
+                className="-mt-0.5"
+              >
                 <CarouselContent className="pt-0.5">
-                  {visible.map((project) => (
-                    <CarouselItem key={project.id} className="sm:basis-1/2 lg:basis-1/3">
-                      <ProjectCard project={project} onOpen={() => setActive(project)} />
+                  {pages.map((page, i) => (
+                    <CarouselItem key={page[0].id} aria-label={`Page ${i + 1} sur ${pages.length}`}>
+                      {/* content-start : une page plus courte que la plus haute garde ses cartes à leur hauteur. */}
+                      <div className="grid content-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {page.map((project) => (
+                          <ProjectCard key={project.id} project={project} onOpen={() => setActive(project)} />
+                        ))}
+                      </div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
