@@ -66,7 +66,7 @@ export default function About() {
               >
                 <h3
                   className={cn(
-                    'font-heading text-primary',
+                    'font-heading text-foreground',
                     featured
                       ? 'text-[34px] font-extrabold leading-[1.1] tracking-[-0.02em]'
                       : 'text-[20px] font-bold leading-snug tracking-[-0.01em]'
@@ -78,7 +78,7 @@ export default function About() {
                   <p className="text-[17px] leading-relaxed text-foreground/85">{item.lead}</p>
                   {item.detail.map((text) => (
                     <div key={text} className="flex items-start gap-3">
-                      <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-[2px] bg-foreground" />
+                      <span aria-hidden="true" className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-[2px] bg-primary" />
                       <p className="text-[15px] leading-relaxed text-muted-foreground">{text}</p>
                     </div>
                   ))}
