@@ -3,6 +3,7 @@ import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import ProjectCard from '@/components/portfolio/ProjectCard';
 import ProjectDrawer from '@/components/portfolio/ProjectDrawer';
+import TagDot from '@/components/portfolio/TagDot';
 import { cn } from '@/lib/utils';
 
 export default function Projects({ projects }) {
@@ -62,13 +63,17 @@ export default function Projects({ projects }) {
                         : 'border-transparent font-medium text-muted-foreground hover:text-foreground'
                     )}
                   >
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        'h-2 w-2 shrink-0 rounded-[2px]',
-                        isActive ? 'bg-accent2' : 'border border-muted-foreground'
-                      )}
-                    />
+                    {type ? (
+                      <TagDot tag={type} size={7} className={isActive ? undefined : 'opacity-35'} />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'h-[7px] w-[7px] shrink-0',
+                          isActive ? 'bg-foreground' : 'border border-muted-foreground'
+                        )}
+                      />
+                    )}
                     {type || 'Tous'}
                   </button>
                 );

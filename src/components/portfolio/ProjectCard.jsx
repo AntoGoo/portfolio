@@ -1,5 +1,6 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import TagDot from '@/components/portfolio/TagDot';
 
 export default function ProjectCard({ project, featured, onOpen }) {
   const category = (project.year || '').trim();
@@ -27,8 +28,8 @@ export default function ProjectCard({ project, featured, onOpen }) {
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex min-h-9 items-start justify-between gap-4">
           {category ? (
-            <span className="flex items-center gap-2.5 text-[12px] font-semibold text-foreground">
-              <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-[2px] bg-accent2" />
+            <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-foreground/80">
+              <TagDot tag={category} size={7} />
               {category}
             </span>
           ) : (
@@ -61,10 +62,10 @@ export default function ProjectCard({ project, featured, onOpen }) {
 
         <div className="mt-auto pt-7">
           {tags.length > 0 && (
-            <ul className="flex flex-wrap gap-x-[18px] gap-y-2">
+            <ul className="flex flex-wrap gap-x-[14px] gap-y-2">
               {tags.map((tag) => (
-                <li key={tag} className="flex items-center gap-2 text-[13px] text-foreground/75">
-                  <span aria-hidden="true" className="h-[5px] w-[5px] shrink-0 rounded-[1px] bg-foreground" />
+                <li key={tag} className="flex items-center gap-[6px] text-[10.5px] uppercase tracking-[0.1em] text-foreground/75">
+                  <TagDot tag={tag} size={5} />
                   {tag}
                 </li>
               ))}

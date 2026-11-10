@@ -1,10 +1,11 @@
+// Couleurs des repères de tags : même saturation, lisibles sur le fond sombre.
 const PALETTE = [
-  'border-primary/45 bg-primary/10 text-primary',
-  'border-violet-500/45 bg-violet-500/10 text-violet-300',
-  'border-emerald-500/45 bg-emerald-500/10 text-emerald-300',
-  'border-amber-500/45 bg-amber-500/10 text-amber-300',
-  'border-sky-500/45 bg-sky-500/10 text-sky-300',
-  'border-rose-500/45 bg-rose-500/10 text-rose-300',
+  '#5B9CF6', // bleu
+  '#F2B53A', // ambre
+  '#8FC1A9', // sauge
+  '#E0896C', // terracotta
+  '#A99BE0', // lavande
+  '#6FC3D9', // cyan
 ];
 
 const normalize = (tag) =>
@@ -15,6 +16,9 @@ const normalize = (tag) =>
     .trim();
 
 // Une couleur stable par mot-clé connu, les autres restent stables elles aussi.
+// Les catégories d'un même jeu de données ont chacune leur couleur :
+// en ligne (GED, Dématérialisation, Serious game, IA, Mapping) comme dans
+// les exemples (Dématérialisation, Produit, Agile, Processus, Interfaces).
 const KEYWORDS = {
   ged: 0,
   elo: 0,
@@ -23,15 +27,18 @@ const KEYWORDS = {
   'serious game': 2,
   'serious games': 2,
   developpement: 2,
+  produit: 2,
   agile: 3,
   scrum: 3,
   jira: 3,
   web: 4,
   api: 4,
   processus: 4,
+  ia: 4,
   interface: 5,
   interfaces: 5,
   prototypage: 5,
+  mapping: 5,
 };
 
 const hash = (value) => {
@@ -40,7 +47,7 @@ const hash = (value) => {
   return total;
 };
 
-export function tagStyle(tag) {
+export function tagColor(tag) {
   const key = normalize(tag);
   const index = KEYWORDS[key] ?? hash(key) % PALETTE.length;
   return PALETTE[index];

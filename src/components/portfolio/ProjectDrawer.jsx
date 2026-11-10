@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { tagStyle } from '@/lib/tagStyle';
+import TagDot from '@/components/portfolio/TagDot';
 import { SectionLabel } from '@/components/portfolio/Section';
 
 const blocks = [
@@ -67,19 +66,14 @@ export default function ProjectDrawer({ project, onClose }) {
                 {project.title}
               </h3>
 
-              <div className="mt-4 flex flex-wrap gap-1.5">
+              <ul className="mt-4 flex flex-wrap gap-x-[14px] gap-y-2">
                 {(project.tags || []).map((tag) => (
-                  <span
-                    key={tag}
-                    className={cn(
-                      'rounded border px-2 py-1 text-[12px]',
-                      tagStyle(tag)
-                    )}
-                  >
+                  <li key={tag} className="flex items-center gap-[6px] text-[10.5px] uppercase tracking-[0.1em] text-foreground/75">
+                    <TagDot tag={tag} size={5} />
                     {tag}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               <div className="mt-9 space-y-7">
                 {blocks
