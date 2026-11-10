@@ -1,20 +1,24 @@
 import Reveal from '@/components/portfolio/Reveal';
 import { cn } from '@/lib/utils';
 
-export default function Section({ id, index, eyebrow, title, lead, children, className, variant = 'default' }) {
+// Point final ajouté aux titres texte qui ne se terminent pas déjà par une ponctuation.
+const withPeriod = (title) =>
+  typeof title === 'string' && !/[.!?…:]$/.test(title.trim()) ? `${title.trim()}.` : title;
+
+export default function Section({ id, index, eyebrow, title, lead, children, className }) {
   return (
     <section id={id} className={cn('border-t border-border/70 py-20 md:py-28', className)}>
       <div className="mx-auto w-full max-w-[1200px] px-6 md:px-10">
         <Reveal>
           <header className="border-b border-border/70 pb-8 md:pb-10">
-            {variant === 'grotesk' ? (
-              <div className="grid gap-5 font-grotesk md:grid-cols-[80px_1fr] md:items-end md:gap-8">
+            {index ? (
+              <div className="font-grotesk">
                 <p className="text-[13px] leading-snug">
-                  <span className="block font-medium text-primary">{index} /</span>
-                  <span className="block font-normal text-muted-foreground">{eyebrow}</span>
+                  <span className="font-medium text-primary">{index} /</span>{' '}
+                  <span className="font-normal text-muted-foreground">{eyebrow}</span>
                 </p>
-                <h2 className="text-[2rem] font-semibold leading-[0.98] tracking-[-0.035em] md:text-[2.5rem]">
-                  {title}
+                <h2 className="mt-3.5 text-[1.75rem] font-semibold leading-[0.98] tracking-[-0.035em] md:text-[2.5rem]">
+                  {withPeriod(title)}
                 </h2>
               </div>
             ) : (

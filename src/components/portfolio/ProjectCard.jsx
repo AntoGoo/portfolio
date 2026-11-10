@@ -23,7 +23,14 @@ export default function ProjectCard({ project, featured, onOpen }) {
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex items-center justify-between gap-3">
           {project.year ? (
-            <span className="text-[11px] font-medium text-primary">{project.year}</span>
+            <span
+              className={cn(
+                'rounded-full border px-2.5 py-1 font-grotesk text-[10px] font-medium uppercase tracking-[0.14em]',
+                tagStyle(project.year)
+              )}
+            >
+              {project.year}
+            </span>
           ) : (
             <span aria-hidden="true" />
           )}

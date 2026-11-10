@@ -29,7 +29,6 @@ export default function Projects({ projects }) {
       id="realisations"
       index="03"
       eyebrow="Réalisations"
-      variant="grotesk"
       title={
         <>
           Des projets pilotés <br className="hidden md:inline" />
