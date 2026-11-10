@@ -29,7 +29,13 @@ export default function Projects({ projects }) {
       id="realisations"
       index="03"
       eyebrow="Réalisations"
-      title="Des projets pilotés de bout en bout"
+      variant="grotesk"
+      title={
+        <>
+          Des projets pilotés <br className="hidden md:inline" />
+          de bout en bout.
+        </>
+      }
     >
       {projects === null ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -46,7 +52,7 @@ export default function Projects({ projects }) {
       ) : (
         <div className="space-y-8">
           {types.length > 0 && (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 font-grotesk">
               {[null, ...types].map((type) => {
                 const isActive = filter === type;
                 return (
