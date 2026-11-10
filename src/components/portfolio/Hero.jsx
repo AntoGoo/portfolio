@@ -8,8 +8,6 @@ const FALLBACK_PORTRAIT = '/images/portrait.webp';
 export default function Hero({ profile = defaultProfile, experiences }) {
   const [firstName, ...rest] = profile.name.split(' ');
   const portrait = profile.photoUrl || profile.photo_url || FALLBACK_PORTRAIT;
-  // Le portrait reste hors des Reveal et de la colonne texte : mix-blend-mode
-  // ne se mélange qu'avec le fond du même contexte d'empilement.
   const portraitProps = {
     src: portrait,
     alt: profile.name,
