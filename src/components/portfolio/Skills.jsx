@@ -17,8 +17,16 @@ export default function Skills() {
         {skillGroups.map((group, i) => (
           <Reveal key={group.label} delay={0.04 * i}>
             <div className="grid gap-4 py-6 md:grid-cols-12 md:items-center md:gap-8">
-              {/* Typo du libellé d'en-tête, mais en bleu : cn remplace sa couleur. */}
-              <h3 className={cn(SECTION_LABEL, SECTION_LABEL_NAME, 'text-primary md:col-span-4')}>
+              {/* Typo du libellé d'en-tête, en blanc : cn remplace sa couleur. Carré
+                  de 7 px comme ceux des catégories des Réalisations. */}
+              <h3
+                className={cn(
+                  SECTION_LABEL,
+                  SECTION_LABEL_NAME,
+                  'inline-flex items-center gap-2.5 text-foreground md:col-span-4'
+                )}
+              >
+                <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-primary" />
                 {group.label}
               </h3>
               <div className="flex flex-wrap gap-2 md:col-span-8">
