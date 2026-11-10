@@ -27,7 +27,12 @@ export default function Timeline({ experiences }) {
           {list.map((job, i) => (
             <Reveal key={job.id} delay={0.05 * i}>
               <li className="relative">
-                <span className="absolute -left-[33px] top-1.5 h-2.5 w-2.5 rounded-full border border-primary bg-background md:-left-[45px]" />
+                {/* Repère carré comme ceux de Méthodologie : centré sur le filet de
+                    l'ol et sur la première ligne (dates, 15 puis 17 px). */}
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-primary md:-left-[45px] md:top-[7px]"
+                />
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
                   {/* Typo du libellé d'en-tête (graisse de « Parcours »), couleur propre aux dates. */}
                   <span className={cn(SECTION_LABEL, 'font-normal text-primary')}>
