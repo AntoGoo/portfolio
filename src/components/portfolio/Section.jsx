@@ -13,7 +13,7 @@ export default function Section({ id, index, eyebrow, title, lead, children, cla
           <header className="border-b border-border/70 pb-8 md:pb-10">
             {index ? (
               <div className="font-grotesk">
-                <p className="font-label text-[13px] leading-snug">
+                <p className="font-label text-[15px] leading-snug md:text-[17px]">
                   <span className="font-medium text-primary">{index} /</span>{' '}
                   <span className="font-normal text-muted-foreground">{eyebrow}</span>
                 </p>
