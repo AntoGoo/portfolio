@@ -1,4 +1,4 @@
-import { ArrowDown, Download, MapPin } from 'lucide-react';
+import { ArrowDown, Download } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
 import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile } from '@/data/portfolioContent';
@@ -8,6 +8,7 @@ const FALLBACK_PORTRAIT = '/images/portrait.webp';
 export default function Hero({ profile = defaultProfile, experiences }) {
   const [firstName, ...rest] = profile.name.split(' ');
   const portrait = profile.photoUrl || profile.photo_url || FALLBACK_PORTRAIT;
+  const roleLine = [profile.role, profile.location?.trim()].filter(Boolean).join(' – ');
   const portraitProps = {
     src: portrait,
     alt: profile.name,
@@ -32,15 +33,8 @@ export default function Hero({ profile = defaultProfile, experiences }) {
         />
 
         <div className="relative z-10 lg:col-span-12">
-          <Reveal>
-            <div className="flex items-center gap-2.5 text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
-              <MapPin className="h-3.5 w-3.5 text-primary" />
-              {profile.location}
-            </div>
-          </Reveal>
-
           <Reveal delay={0.08}>
-            <h1 className="mt-7 font-heading text-[2.9rem] font-semibold leading-[0.94] tracking-[-0.035em] text-balance sm:text-[3.8rem] lg:text-[4.4rem]">
+            <h1 className="font-heading text-[2.9rem] font-semibold leading-[0.94] tracking-[-0.035em] text-balance sm:text-[3.8rem] lg:text-[4.4rem]">
               {firstName}
               {rest.length > 0 && (
                 <>
@@ -52,9 +46,7 @@ export default function Hero({ profile = defaultProfile, experiences }) {
           </Reveal>
 
           <Reveal delay={0.14}>
-            <p className="font-label mt-7 text-[12px] font-medium uppercase tracking-[0.26em] text-primary">
-              {profile.role}
-            </p>
+            <p className="font-label mt-7 text-[12px] text-primary">{roleLine}</p>
           </Reveal>
 
           <Reveal delay={0.2}>
