@@ -16,7 +16,7 @@ function ContactBlock({ label, children }) {
   );
 }
 
-const valueClass = 'font-heading text-[22px] font-semibold leading-snug text-foreground';
+const valueClass = 'font-heading text-[18px] font-semibold leading-snug text-foreground';
 
 export default function Contact({ profile = defaultProfile, experiences }) {
   const email = profile.email;
