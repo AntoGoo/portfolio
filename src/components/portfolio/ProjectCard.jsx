@@ -1,6 +1,7 @@
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TagDot from '@/components/portfolio/TagDot';
+import { formatProjectDate } from '@/lib/projectDate';
 
 export default function ProjectCard({ project, featured, onOpen }) {
   const category = (project.year || '').trim();
@@ -8,6 +9,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
   const tags = (project.tags || []).filter((tag) => tag.trim().toLowerCase() !== category.toLowerCase());
   // Pas de champ client : on prend ce qui suit le tiret du titre (« Projet GED — Dalkia »).
   const client = project.title?.split(' — ').pop()?.trim() || 'Logo client';
+  const period = formatProjectDate(project.start_date, project.end_date);
 
   return (
     <article
@@ -55,6 +57,8 @@ export default function ProjectCard({ project, featured, onOpen }) {
         >
           {project.title}
         </h3>
+        {/* Police des dates de Parcours. */}
+        {period && <p className="font-label mt-2 text-[12px] font-normal text-muted-foreground">{period}</p>}
 
         <p className="mt-3 line-clamp-3 text-[13px] font-normal leading-[1.55] text-muted-foreground">
           {project.context}

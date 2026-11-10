@@ -2,9 +2,10 @@
 
 export const TABLES = {
   projects: {
-    columns: ['title', 'year', 'context', 'problem', 'objectives', 'role', 'methodology', 'solutions',
-      'results', 'tags', 'link', 'link_label', 'logo_url', 'image_url', 'published', 'order'],
+    columns: ['title', 'year', 'start_date', 'end_date', 'context', 'problem', 'objectives', 'role', 'methodology',
+      'solutions', 'results', 'tags', 'link', 'link_label', 'logo_url', 'image_url', 'published', 'order'],
     json: ['tags'],
+    months: ['start_date', 'end_date'],
     orderBy: '"order" ASC, created_date ASC',
   },
   experiences: {
@@ -41,6 +42,12 @@ const fromRow = (table, row) => {
   return out;
 };
 
+// Mois « AAAA-MM » ; toute autre valeur devient vide.
+const toMonth = (value) => {
+  const month = value == null ? '' : String(value).trim();
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(month) ? month : '';
+};
+
 const toValue = (table, col, value) => {
   if (TABLES[table].json.includes(col)) return JSON.stringify(Array.isArray(value) ? value : []);
   if (col === 'published') return value === false || value === 0 ? 0 : 1;
@@ -48,8 +55,18 @@ const toValue = (table, col, value) => {
     const n = Number.parseInt(value, 10);
     return Number.isFinite(n) ? n : 99;
   }
+  if (TABLES[table].months?.includes(col)) return toMonth(value);
   return value == null ? '' : String(value);
 };
+
+// Contrôle des valeurs croisées avant écriture ; renvoie un message d'erreur ou null.
+export function invalid(table, body) {
+  const [start, end] = [toMonth(body.start_date), toMonth(body.end_date)];
+  if (table === 'projects' && start && end && end < start) {
+    return 'La fin du projet ne peut pas précéder son début.';
+  }
+  return null;
+}
 
 export async function list(db, table, { publishedOnly = false } = {}) {
   const where = publishedOnly && TABLES[table].columns.includes('published') ? 'WHERE published = 1' : '';

@@ -11,6 +11,8 @@ import { Image } from '@/components/ui/image';
 const empty = {
   title: '',
   year: '',
+  start_date: '',
+  end_date: '',
   context: '',
   problem: '',
   objectives: '',
@@ -36,6 +38,11 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
   const [uploading, setUploading] = useState(false);
 
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
+  // Mois « AAAA-MM » : l'ordre alphabétique suit l'ordre chronologique.
+  const dateError =
+    form.start_date && form.end_date && form.end_date < form.start_date
+      ? 'La fin ne peut pas précéder le début.'
+      : null;
 
   const uploadLogo = async (event) => {
     const file = event.target.files?.[0];
@@ -53,7 +60,7 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
 
   const save = async (event) => {
     event.preventDefault();
-    if (!form.title.trim()) return;
+    if (!form.title.trim() || dateError) return;
     setSaving(true);
     const payload = {
       ...form,
@@ -94,6 +101,21 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
         </div>
         <Field label="Catégorie">
           <Input value={form.year} onChange={set('year')} placeholder="Dématérialisation" />
+        </Field>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Début">
+          <Input type="month" value={form.start_date} onChange={set('start_date')} />
+        </Field>
+        <Field label="Fin (laisser vide si en cours ou ponctuel)" error={dateError}>
+          <Input
+            type="month"
+            value={form.end_date}
+            onChange={set('end_date')}
+            min={form.start_date || undefined}
+            aria-invalid={dateError ? true : undefined}
+          />
         </Field>
       </div>
 
@@ -171,7 +193,7 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
         <Button type="button" variant="outline" onClick={onCancel}>
           Annuler
         </Button>
-        <Button type="submit" disabled={saving || !form.title.trim()}>
+        <Button type="submit" disabled={saving || !form.title.trim() || Boolean(dateError)}>
           {saving ? 'Enregistrement…' : 'Enregistrer'}
         </Button>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/api/client';
 import { profile as fallbackProfile } from '@/data/portfolioContent';
+import { sortProjectsByDate } from '@/lib/projectDate';
 
 export default function usePortfolioData() {
   const [settings, setSettings] = useState(null);
@@ -14,7 +15,7 @@ export default function usePortfolioData() {
       .then((data) => {
         if (!alive) return;
         setSettings(data?.settings || null);
-        setProjects(data?.projects || []);
+        setProjects(sortProjectsByDate(data?.projects || []));
         setExperiences(data?.experiences || []);
       })
       .catch(() => {

@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ExternalLink, X } from 'lucide-react';
 import TagDot from '@/components/portfolio/TagDot';
 import { SectionLabel } from '@/components/portfolio/Section';
+import { formatProjectDate } from '@/lib/projectDate';
 
 const blocks = [
   { key: 'context', label: 'Contexte' },
@@ -49,7 +50,9 @@ export default function ProjectDrawer({ project, onClose }) {
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-6 py-4 backdrop-blur md:px-9">
               <span className="font-label text-[12px] text-muted-foreground">
-                {project.year || 'Réalisation'}
+                {[project.year || 'Réalisation', formatProjectDate(project.start_date, project.end_date)]
+                  .filter(Boolean)
+                  .join(' · ')}
               </span>
               <button
                 type="button"

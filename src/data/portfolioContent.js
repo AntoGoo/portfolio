@@ -92,12 +92,16 @@ export const skillGroups = [
   { label: 'Langues', items: ['Français', 'Anglais : courant et technique'] },
 ];
 
+// Projets d'exemple. Les dates (start_date / end_date, « AAAA-MM ») sont des
+// exemples, pas des périodes réelles.
 export const sampleProjects = [
   {
     id: 'exemple-1',
     index: '01',
     title: 'Pilotage du projet GED — ELO',
     year: 'Dématérialisation',
+    start_date: '2022-10', // exemple
+    end_date: '2023-10', // exemple
     context:
       "Déploiement d'une gestion électronique des documents dans un environnement multi-sites, avec des usages métiers hétérogènes.",
     problem:
@@ -122,6 +126,8 @@ export const sampleProjects = [
     index: '02',
     title: 'Dématérialisation et optimisation des processus',
     year: 'Processus',
+    start_date: '2021-03', // exemple
+    end_date: '2021-11', // exemple
     context:
       'Des processus métiers encore largement papier, avec des circuits de validation longs et peu traçables.',
     problem:
@@ -144,6 +150,8 @@ export const sampleProjects = [
     index: '03',
     title: "Conception d'une solution digitale métier",
     year: 'Produit',
+    start_date: '2020-01', // exemple
+    end_date: '2020-06', // exemple
     context:
       "Un besoin métier mal couvert par les outils existants, générant des contournements et des fichiers parallèles.",
     problem: "Absence d'outil adapté, dispersion de l'information et dépendance à des traitements manuels.",
@@ -163,6 +171,8 @@ export const sampleProjects = [
     index: '04',
     title: 'Pilotage de projet en environnement Agile',
     year: 'Agile',
+    start_date: '2023-02', // exemple
+    end_date: '', // exemple
     context:
       'Une équipe pluridisciplinaire et un périmètre fonctionnel évolutif nécessitant un cadre de travail lisible.',
     problem: 'Priorités mouvantes, visibilité limitée sur avancement et difficulté à sécuriser les livraisons.',
@@ -183,6 +193,8 @@ export const sampleProjects = [
     index: '05',
     title: 'Développement de solutions interactives',
     year: 'Interfaces',
+    start_date: '2019-05', // exemple
+    end_date: '', // exemple
     context: 'Des contenus métiers à rendre accessibles et manipulables de manière plus directe et plus visuelle.',
     problem: 'Des supports statiques peu adaptés aux usages et difficiles à maintenir.',
     objectives: 'Proposer des interfaces interactives, lisibles et maintenables.',
