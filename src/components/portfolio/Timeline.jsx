@@ -1,5 +1,7 @@
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
+import { SECTION_LABEL } from '@/components/portfolio/styles';
+import { cn } from '@/lib/utils';
 
 export default function Timeline({ experiences }) {
   const list = experiences || [];
@@ -27,7 +29,8 @@ export default function Timeline({ experiences }) {
               <li className="relative">
                 <span className="absolute -left-[33px] top-1.5 h-2.5 w-2.5 rounded-full border border-primary bg-background md:-left-[45px]" />
                 <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  <span className="font-label text-[10.5px] uppercase text-primary">
+                  {/* Typo du libellé d'en-tête (graisse de « Parcours »), couleur propre aux dates. */}
+                  <span className={cn(SECTION_LABEL, 'font-normal text-primary')}>
                     {[job.start, job.end].filter(Boolean).join(' — ')}
                   </span>
                   {job.company && (
