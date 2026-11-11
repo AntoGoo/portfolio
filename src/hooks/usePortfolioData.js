@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { api } from '@/api/client';
 import { profile as fallbackProfile } from '@/data/portfolioContent';
 import { sortProjectsByDate } from '@/lib/projectDate';
+import { resolveTexts } from '@/lib/siteTexts';
 
 export default function usePortfolioData() {
   const [settings, setSettings] = useState(null);
   const [projects, setProjects] = useState(null);
   const [experiences, setExperiences] = useState(null);
+  const [storedTexts, setStoredTexts] = useState(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -15,6 +18,8 @@ export default function usePortfolioData() {
       .then((data) => {
         if (!alive) return;
         setSettings(data?.settings || null);
+        setStoredTexts(data?.texts || null);
+        setReady(true);
         setProjects(sortProjectsByDate(data?.projects || []));
         setExperiences(data?.experiences || []);
       })
@@ -22,6 +27,7 @@ export default function usePortfolioData() {
         if (!alive) return;
         setProjects([]);
         setExperiences([]);
+        setReady(true);
       });
     return () => {
       alive = false;
@@ -33,5 +39,7 @@ export default function usePortfolioData() {
     if (value) mergedProfile[key] = value;
   });
 
-  return { profile: mergedProfile, projects, experiences };
+  const texts = useMemo(() => resolveTexts(storedTexts), [storedTexts]);
+
+  return { profile: mergedProfile, texts, projects, experiences, ready };
 }

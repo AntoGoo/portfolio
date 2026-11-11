@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { navLinks as links } from '@/data/portfolioContent';
+import { siteTexts } from '@/data/portfolioContent';
 import { cn } from '@/lib/utils';
 
-export default function Nav() {
+export default function Nav({ texts = siteTexts.nav }) {
+  const links = texts.links;
   const [active, setActive] = useState('');
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -29,7 +30,7 @@ export default function Nav() {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, []);
+  }, [links]);
 
   return (
     <header
@@ -63,7 +64,7 @@ export default function Nav() {
             href="#contact"
             className="hidden h-[42px] items-center rounded-md border border-primary/50 px-5 text-[13px] font-medium text-primary transition-all hover:border-primary hover:bg-primary/10 sm:flex"
           >
-            Me contacter
+            {texts.cta}
           </a>
           <button
             type="button"

@@ -1,12 +1,14 @@
 import { jsPDF } from 'jspdf';
-import { profile, expertises, skillGroups, sampleExperiences } from '@/data/portfolioContent';
+import { profile, siteTexts, sampleExperiences } from '@/data/portfolioContent';
 
 const PAGE_W = 210;
 const PAGE_H = 297;
 const MARGIN = 20;
 const CONTENT_W = PAGE_W - MARGIN * 2;
 
-export function downloadCv({ profile: profileOverride, experiences } = {}) {
+export function downloadCv({ profile: profileOverride, experiences, texts = siteTexts } = {}) {
+  const expertises = texts.expertises.items;
+  const skillGroups = texts.skills.groups;
   const p = { ...profile, ...(profileOverride || {}) };
   const jobs = experiences && experiences.length ? experiences : sampleExperiences;
 
@@ -56,7 +58,7 @@ export function downloadCv({ profile: profileOverride, experiences } = {}) {
   heading('Expertises');
   expertises.forEach((item) => {
     write(item.title, { size: 10.5, style: 'bold', color: [30, 34, 40], lh: 5 });
-    write(item.items.join(' · '), { size: 9, color: [90, 97, 108], gap: 1.5 });
+    write(item.items.filter(Boolean).join(' · '), { size: 9, color: [90, 97, 108], gap: 1.5 });
   });
 
   heading('Parcours professionnel');
@@ -76,7 +78,7 @@ export function downloadCv({ profile: profileOverride, experiences } = {}) {
 
   heading('Environnement & compétences');
   skillGroups.forEach((group) => {
-    write(`${group.label} : ${group.items.join(', ')}`, { size: 9, lh: 4.6 });
+    write(`${group.label} : ${group.items.filter(Boolean).join(', ')}`, { size: 9, lh: 4.6 });
   });
 
   doc.save(`CV-${p.name.replace(/\s+/g, '-')}.pdf`);

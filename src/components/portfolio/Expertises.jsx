@@ -1,6 +1,6 @@
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
-import { expertises } from '@/data/portfolioContent';
+import { siteTexts } from '@/data/portfolioContent';
 import { cn } from '@/lib/utils';
 
 // Ordre d'affichage (et d'empilement en mobile) et place de chaque carte dans
@@ -16,8 +16,8 @@ function Bullet() {
   return <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-[2px] bg-primary" />;
 }
 
-export default function Expertises() {
-  const cards = LAYOUT.map((slot) => ({ ...slot, item: expertises.find((e) => e.key === slot.key) })).filter(
+export default function Expertises({ texts = siteTexts.expertises }) {
+  const cards = LAYOUT.map((slot) => ({ ...slot, item: texts.items.find((e) => e.key === slot.key) })).filter(
     (card) => card.item
   );
 
@@ -25,8 +25,9 @@ export default function Expertises() {
     <Section
       id="expertises"
       index="02"
-      eyebrow="Expertises"
-      title="Quatre domaines complémentaires"
+      eyebrow={texts.eyebrow}
+      title={texts.title}
+      lead={texts.lead}
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map(({ key, className, featured, twoColumns, item }, i) => (
@@ -49,7 +50,7 @@ export default function Expertises() {
               </h3>
               <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{item.summary}</p>
               <ul className={cn('mt-6', twoColumns && 'grid sm:grid-cols-2 sm:gap-x-8')}>
-                {item.items.map((line) => (
+                {item.items.filter(Boolean).map((line) => (
                   <li
                     key={line}
                     className={cn(

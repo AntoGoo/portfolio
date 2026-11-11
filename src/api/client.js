@@ -5,9 +5,8 @@ async function request(path, options = {}) {
   try {
     response = await fetch(path, {
       credentials: 'same-origin',
-      // Session Access absente ou expirée : Access répond par une redirection vers sa page de
-      // connexion (autre domaine). Suivie par fetch, elle échoue en « Failed to fetch » ; en
-      // mode manual, on la reconnaît et on peut l'expliquer.
+      // Si Cloudflare Access protège aussi le site, une session Access expirée répond par une
+      // redirection vers sa page de connexion (autre domaine) : en mode manual, on la reconnaît.
       redirect: 'manual',
       ...options,
       headers: options.body instanceof FormData
@@ -22,6 +21,10 @@ async function request(path, options = {}) {
   }
   if (response.status === 204) return null;
   const data = await response.json().catch(() => null);
+  if (response.status === 401 && path.startsWith('/api/admin')) {
+    // Session du studio expirée : /studio réaffiche le formulaire de connexion.
+    window.dispatchEvent(new Event('studio:unauthorized'));
+  }
   if (!response.ok) {
     throw new Error(`Erreur ${response.status}${data?.error ? ` : ${data.error}` : ` (${response.statusText || 'sans détail'})`}`);
   }
@@ -45,5 +48,14 @@ export const api = {
     body.append('file', file);
     return request('/api/admin/upload', { method: 'POST', body });
   },
-  logoutUrl: '/cdn-cgi/access/logout',
+  content: {
+    get: () => request('/api/admin/content'),
+    save: (texts) => request('/api/admin/content', { method: 'PUT', body: JSON.stringify(texts) }),
+  },
+  auth: {
+    session: () => request('/api/auth/session'),
+    login: (email, password) =>
+      request('/api/auth/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
+    logout: () => request('/api/auth/logout', { method: 'POST' }),
+  },
 };

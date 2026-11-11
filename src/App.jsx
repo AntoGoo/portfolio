@@ -7,7 +7,7 @@ import ScrollToTop from './components/ScrollToTop';
 import Portfolio from '@/pages/Portfolio';
 import Studio from '@/pages/Studio';
 
-// /studio est protégé en amont par Cloudflare Access : aucune logique de login côté front.
+// /studio affiche un formulaire de connexion tant qu'aucune session n'est ouverte (voir pages/Studio.jsx).
 function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>

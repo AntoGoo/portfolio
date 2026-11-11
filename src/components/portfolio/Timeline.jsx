@@ -2,17 +2,18 @@ import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import { SECTION_LABEL } from '@/components/portfolio/styles';
 import { cn } from '@/lib/utils';
+import { siteTexts } from '@/data/portfolioContent';
 
-export default function Timeline({ experiences }) {
+export default function Timeline({ experiences, texts = siteTexts.timeline }) {
   const list = experiences || [];
 
   return (
     <Section
       id="parcours"
       index="06"
-      eyebrow="Parcours"
-      title="Parcours professionnel"
-      lead="Une progression continue, du développement à la conduite de projets."
+      eyebrow={texts.eyebrow}
+      title={texts.title}
+      lead={texts.lead}
     >
       {experiences === null ? (
         <div className="space-y-4">
@@ -21,7 +22,7 @@ export default function Timeline({ experiences }) {
           ))}
         </div>
       ) : list.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Le parcours sera publié prochainement.</p>
+        <p className="text-sm text-muted-foreground">{texts.empty}</p>
       ) : (
         <ol className="relative space-y-10 border-l border-border/80 pl-7 md:space-y-12 md:pl-10">
           {list.map((job, i) => (

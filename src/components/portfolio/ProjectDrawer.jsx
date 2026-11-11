@@ -4,18 +4,13 @@ import { ExternalLink, X } from 'lucide-react';
 import TagDot from '@/components/portfolio/TagDot';
 import { SectionLabel } from '@/components/portfolio/Section';
 import { formatProjectDate } from '@/lib/projectDate';
+import { siteTexts } from '@/data/portfolioContent';
 
-const blocks = [
-  { key: 'context', label: 'Contexte' },
-  { key: 'problem', label: 'Problématique' },
-  { key: 'objectives', label: 'Objectifs' },
-  { key: 'role', label: 'Rôle et responsabilités' },
-  { key: 'methodology', label: 'Méthodologie' },
-  { key: 'solutions', label: 'Solutions mises en œuvre' },
-  { key: 'results', label: 'Résultats' },
-];
+// Rubriques de la fiche, dans l'ordre d'affichage ; libellés modifiables dans le studio.
+const BLOCK_KEYS = ['context', 'problem', 'objectives', 'role', 'methodology', 'solutions', 'results'];
 
-export default function ProjectDrawer({ project, onClose }) {
+export default function ProjectDrawer({ project, texts = siteTexts.projects, onClose }) {
+  const blocks = BLOCK_KEYS.map((key) => ({ key, label: texts.blocks?.[key] || siteTexts.projects.blocks[key] }));
   useEffect(() => {
     const onKey = (event) => event.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
@@ -98,7 +93,7 @@ export default function ProjectDrawer({ project, onClose }) {
                   rel="noopener noreferrer"
                   className="mt-10 inline-flex h-[44px] items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                  {project.link_label || 'Voir le projet'}
+                  {project.link_label || texts.linkDefault}
                   <ExternalLink className="h-4 w-4" />
                 </a>
               )}

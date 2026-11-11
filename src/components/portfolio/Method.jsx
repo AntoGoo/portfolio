@@ -1,7 +1,7 @@
 import { useReducedMotion } from 'framer-motion';
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
-import { methodSteps } from '@/data/portfolioContent';
+import { siteTexts } from '@/data/portfolioContent';
 import { cn } from '@/lib/utils';
 
 // Bout droit du rail horizontal de chaque étape : il franchit la gouttière
@@ -14,19 +14,21 @@ function railEnd(i, count) {
   return 'md:-right-7';
 }
 
-export default function Method() {
+export default function Method({ texts = siteTexts.method }) {
   const reduceMotion = useReducedMotion();
+  const methodSteps = texts.steps;
 
   return (
     <Section
       id="methode"
       index="04"
-      eyebrow="Méthodologie"
-      title="Une démarche agile en sept étapes"
+      eyebrow={texts.eyebrow}
+      title={texts.title}
+      lead={texts.lead}
     >
       <ol className="grid gap-y-8 md:grid-cols-4 md:gap-x-7 md:gap-y-14 lg:grid-cols-7">
         {methodSteps.map((step, i) => (
-          <li key={step.number} className="font-label relative pl-6 md:pl-0">
+          <li key={i} className="font-label relative pl-6 md:pl-0">
             {/* rail mobile : segment vertical jusqu'au repère suivant */}
             {i < methodSteps.length - 1 && (
               <span
@@ -43,7 +45,7 @@ export default function Method() {
 
             <Reveal delay={0.06 * i} y={reduceMotion ? 0 : undefined}>
               <span className="block text-[36px] font-medium leading-none tracking-[-0.03em] text-foreground tabular-nums md:mt-7 md:text-[52px]">
-                {step.number}
+                {step.number || String(i + 1).padStart(2, '0')}
               </span>
               <h3 className="mt-3.5 text-[18px] font-semibold leading-snug tracking-[-0.01em] text-foreground md:mt-[22px]">
                 {step.title}

@@ -8,6 +8,7 @@ import ProjectDrawer from '@/components/portfolio/ProjectDrawer';
 import TagDot from '@/components/portfolio/TagDot';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
+import { siteTexts } from '@/data/portfolioContent';
 
 // Au-delà de ce nombre de projets visibles, la grille devient un carrousel.
 const GRID_MAX = 6;
@@ -50,7 +51,7 @@ const pad = (n) => String(n).padStart(2, '0');
 const arrowClass =
   'flex h-11 w-11 items-center justify-center rounded-[6px] border border-border text-foreground transition-colors enabled:hover:border-primary enabled:hover:text-primary disabled:opacity-40';
 
-export default function Projects({ projects }) {
+export default function Projects({ projects, texts = siteTexts.projects }) {
   const [active, setActive] = useState(null);
   const [filter, setFilter] = useState(null);
   const [carouselApi, setCarouselApi] = useState(null);
@@ -96,8 +97,9 @@ export default function Projects({ projects }) {
     <Section
       id="realisations"
       index="03"
-      eyebrow="Réalisations"
-      title="Des projets pilotés de bout en bout"
+      eyebrow={texts.eyebrow}
+      title={texts.title}
+      lead={texts.lead}
     >
       {projects === null ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -110,7 +112,7 @@ export default function Projects({ projects }) {
           ))}
         </div>
       ) : list.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Les réalisations seront publiées prochainement.</p>
+        <p className="text-sm text-muted-foreground">{texts.empty}</p>
       ) : (
         <div className="space-y-8">
           {(types.length > 0 || isCarousel) && (
@@ -180,7 +182,7 @@ export default function Projects({ projects }) {
           )}
 
           {visible.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Aucune réalisation pour ce filtre.</p>
+            <p className="text-sm text-muted-foreground">{texts.emptyFilter}</p>
           ) : isCarousel ? (
             <Reveal>
               {/* Les flèches clavier sont gérées par Carousel, tant que le focus est dedans.
@@ -219,7 +221,7 @@ export default function Projects({ projects }) {
         </div>
       )}
 
-      <ProjectDrawer project={active} onClose={() => setActive(null)} />
+      <ProjectDrawer project={active} texts={texts} onClose={() => setActive(null)} />
     </Section>
   );
 }
