@@ -25,12 +25,12 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
       <div className="pointer-events-none absolute -right-32 -top-24 h-[520px] w-[520px] rounded-full bg-primary/10 blur-[130px]" />
       <div className="pointer-events-none absolute -bottom-24 left-1/4 h-[280px] w-[420px] rounded-full bg-primary/5 blur-[120px]" />
 
-      <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-4 px-6 pb-20 pt-10 md:px-10 md:pb-28 md:pt-24 lg:grid-cols-12 lg:gap-10">
-        <img {...portraitProps} className="hero-portrait hero-portrait--mobile mx-auto h-80 w-full max-w-[360px] lg:hidden" />
+      <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-4 px-6 pb-20 pt-10 md:px-10 md:pb-28 md:pt-24 lg:min-h-[784px] lg:grid-cols-12 lg:gap-10">
+        <img {...portraitProps} className="hero-portrait hero-portrait--mobile mx-auto h-96 w-full max-w-[360px] lg:hidden" />
         {/* Décalé de 40 px vers la droite ; la section (overflow-hidden) rogne ce qui dépasse. */}
         <img
           {...portraitProps}
-          className="hero-portrait hero-portrait--desktop absolute bottom-0 right-0 z-0 hidden h-full w-[45%] lg:block lg:translate-x-10"
+          className="hero-portrait hero-portrait--desktop absolute bottom-0 right-0 z-0 hidden h-full w-[52%] lg:block lg:translate-x-10"
         />
 
         <div className="relative z-10 lg:col-span-12">
