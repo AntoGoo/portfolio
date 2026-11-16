@@ -12,8 +12,8 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
   const portraitProps = {
     src: portrait,
     alt: profile.name,
-    width: 940,
-    height: 1408,
+    width: 1000,
+    height: 1621,
     loading: 'eager',
     fetchpriority: 'high',
     decoding: 'async',
