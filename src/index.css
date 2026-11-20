@@ -38,6 +38,7 @@
     --sidebar-accent-foreground: 210 17% 95%;
     --sidebar-border: 219 16% 20%;
     --sidebar-ring: 217 89% 61%;
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
 
   .dark {
@@ -126,6 +127,49 @@
   .hero-portrait {
     object-fit: contain;
     object-position: center bottom;
+  }
+}
+
+/* Reflet ambre animé par-dessus la trame de points : un calque séparé (le portrait lui-même
+   reste sans filtre, cf. ci-dessus) reprend la même image en mask-image, pour que le dégradé
+   ne s'allume que sur les points déjà dessinés, jamais sur le fond transparent autour. */
+@layer components {
+  .hero-portrait-shimmer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    mask-repeat: no-repeat;
+    mask-position: center bottom;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center bottom;
+    -webkit-mask-size: contain;
+  }
+
+  .hero-portrait-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: -20% -60%;
+    background: linear-gradient(100deg, transparent 20%, hsl(40 70% 65% / 0.45) 50%, transparent 80%);
+    transform: translateX(-45%);
+    animation: hero-portrait-shimmer 12s var(--ease-in-out) infinite;
+  }
+}
+
+@keyframes hero-portrait-shimmer {
+  0%,
+  45% {
+    transform: translateX(-45%);
+  }
+  100% {
+    transform: translateX(45%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait-shimmer::after {
+    animation: none;
   }
 }
 
