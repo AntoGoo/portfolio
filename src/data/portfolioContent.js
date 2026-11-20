@@ -6,7 +6,7 @@ export const profile = {
   name: 'Anthony Gouvrillon',
   initials: 'AG',
   role: 'Chef de projet IT',
-  tagline: 'Faire avancer les projets. Donner du sens à la technologie.',
+  tagline: 'Chef de projet et développeur : je fais le lien entre les équipes et la technique.',
   intro:
     'Chef de projet IT depuis plus de 20 ans (jeu vidéo, GED/OCR, ingénierie événementielle), je pilote les projets du cadrage au déploiement avec une bonne facilité de compréhension technique et fonctionnelle des sujets.',
   location: 'Nantes',
@@ -276,7 +276,7 @@ export const siteTexts = {
   },
   about: {
     eyebrow: 'Profil',
-    title: 'Un parcours construit sur le terrain',
+    title: 'Un parcours entre pilotage et technique',
     lead: '',
     intro:
       "Dirigeant d'une société d'ingénierie événementielle pendant 16 ans, puis chef de projet en GED et en jeux vidéo / serious games : mon parcours mêle développement et conduite de projets. Cette expérience m'a appris à traduire une demande métier en solution concrète, à arbitrer quand c'est nécessaire et à tenir le cap jusqu'à la mise en service.",
