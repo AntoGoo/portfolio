@@ -26,7 +26,7 @@ export default function Skills({ texts = siteTexts.skills }) {
                   'inline-flex items-center gap-2.5 text-foreground md:col-span-4'
                 )}
               >
-                <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-primary" />
+                <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-accent2" />
                 {group.label}
               </h3>
               <div className="flex flex-wrap gap-2 md:col-span-8">

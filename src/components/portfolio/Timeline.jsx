@@ -19,7 +19,7 @@ function TimelineItem({ job, delay }) {
             l'ol et sur la première ligne (dates, 15 puis 17 px). */}
         <span
           aria-hidden="true"
-          className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-primary md:-left-[45px] md:top-[7px]"
+          className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-accent2 md:-left-[45px] md:top-[7px]"
         />
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           {/* Typo du libellé d'en-tête (graisse de « Parcours »), dates en blanc. */}
@@ -65,7 +65,7 @@ function TimelineItem({ job, delay }) {
             <ul className="mt-1.5 space-y-2">
               {missions.map((mission) => (
                 <li key={mission} className="flex items-start gap-3 text-[13.5px] text-foreground/80">
-                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary/70" />
+                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-accent2" />
                   {mission}
                 </li>
               ))}

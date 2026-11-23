@@ -14,7 +14,7 @@ const LAYOUT = [
 ];
 
 function Bullet() {
-  return <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-[2px] bg-primary" />;
+  return <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-[2px] bg-accent2" />;
 }
 
 export default function Expertises({ texts = siteTexts.expertises }) {

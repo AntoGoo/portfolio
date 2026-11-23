@@ -8,7 +8,7 @@ function ContactBlock({ label, children }) {
   return (
     <div className="px-7 py-[26px]">
       <p className="flex items-center gap-2.5 font-heading text-[14px] font-medium text-muted-foreground">
-        <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-primary" />
+        <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 bg-accent2" />
         {label}
       </p>
       <div className="mt-2">{children}</div>
