@@ -21,7 +21,7 @@ export default function Method({ texts = siteTexts.method }) {
   return (
     <Section
       id="methode"
-      index="04"
+      index="03"
       eyebrow={texts.eyebrow}
       title={texts.title}
       lead={texts.lead}

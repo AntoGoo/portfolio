@@ -19,8 +19,8 @@ export const profile = {
 export const navLinks = [
   { id: 'profil', label: 'Profil' },
   { id: 'expertises', label: 'Expertises' },
-  { id: 'realisations', label: 'Réalisations' },
   { id: 'methode', label: 'Méthode' },
+  { id: 'realisations', label: 'Réalisations' },
   { id: 'parcours', label: 'Parcours' },
   { id: 'contact', label: 'Contact' },
 ];

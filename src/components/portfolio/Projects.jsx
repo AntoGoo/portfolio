@@ -96,7 +96,7 @@ export default function Projects({ projects, texts = siteTexts.projects }) {
   return (
     <Section
       id="realisations"
-      index="03"
+      index="04"
       eyebrow={texts.eyebrow}
       title={texts.title}
       lead={texts.lead}

@@ -23,8 +23,8 @@ export default function Portfolio() {
         <Hero profile={profile} texts={texts} experiences={experiences} />
         <About texts={texts.about} />
         <Expertises texts={texts.expertises} />
-        <Projects projects={projects} texts={texts.projects} />
         <Method texts={texts.method} />
+        <Projects projects={projects} texts={texts.projects} />
         <Timeline experiences={experiences} texts={texts.timeline} />
         <Contact profile={profile} texts={texts} experiences={experiences} />
       </main>
