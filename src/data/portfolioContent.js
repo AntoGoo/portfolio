@@ -81,6 +81,19 @@ export const expertises = [
       'Facilitation et résolution de problèmes',
     ],
   },
+  {
+    key: 'ia',
+    icon: 'sparkles',
+    title: 'IA',
+    summary: "Mettre l'IA au service des projets, du prototypage à l'automatisation.",
+    items: [
+      'Claude / Code et autres LLM',
+      'IA locale',
+      'Agents',
+      'RAG',
+      'Skills, connecteurs, MCP',
+    ],
+  },
 ];
 
 export const methodSteps = [

@@ -4,12 +4,13 @@ import { siteTexts } from '@/data/portfolioContent';
 import { cn } from '@/lib/utils';
 
 // Ordre d'affichage (et d'empilement en mobile) et place de chaque carte dans
-// la grille bento : 1 colonne, 2 en tablette, 3 colonnes sur 2 rangées en desktop.
+// la grille bento : 1 colonne, 2 en tablette, 4 colonnes sur 2 rangées en desktop.
 const LAYOUT = [
   { key: 'projet', className: 'lg:col-start-1 lg:row-start-1' },
   { key: 'gouvernance', className: 'lg:col-start-2 lg:row-start-1' },
   { key: 'management', className: 'lg:col-start-3 lg:row-start-1' },
-  { key: 'techno', className: 'sm:col-span-2 lg:col-span-3 lg:row-start-2', twoColumns: true },
+  { key: 'ia', className: 'lg:col-start-4 lg:row-start-1' },
+  { key: 'techno', className: 'sm:col-span-2 lg:col-span-4 lg:row-start-2', twoColumns: true },
 ];
 
 function Bullet() {
@@ -29,7 +30,7 @@ export default function Expertises({ texts = siteTexts.expertises }) {
       title={texts.title}
       lead={texts.lead}
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map(({ key, className, featured, twoColumns, item }, i) => (
           <Reveal key={key} delay={0.05 * i} className={className}>
             <div
