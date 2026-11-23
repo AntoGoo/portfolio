@@ -42,13 +42,13 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-4 px-6 pb-20 pt-10 md:px-10 md:pb-28 md:pt-24 lg:min-h-[784px] lg:grid-cols-12 lg:gap-10">
         <div className="relative mx-auto h-96 w-full max-w-[360px] lg:hidden">
           <img {...basePhotoProps} className="hero-portrait hero-portrait--mobile h-full w-full" />
-          <img {...portraitProps} className="hero-portrait hero-portrait--mobile absolute inset-0 h-full w-full opacity-65" />
+          <img {...portraitProps} className="hero-portrait hero-portrait--mobile hero-portrait-breathe absolute inset-0 h-full w-full" />
           <div className="hero-portrait-shimmer" style={shimmerMaskStyle} aria-hidden="true" />
         </div>
         {/* Décalé de 40 px vers la droite ; la section (overflow-hidden) rogne ce qui dépasse. */}
         <div className="absolute bottom-0 right-0 z-0 hidden h-full w-[52%] lg:block lg:translate-x-10">
           <img {...basePhotoProps} className="hero-portrait hero-portrait--desktop h-full w-full" />
-          <img {...portraitProps} className="hero-portrait hero-portrait--desktop absolute inset-0 h-full w-full opacity-65" />
+          <img {...portraitProps} className="hero-portrait hero-portrait--desktop hero-portrait-breathe absolute inset-0 h-full w-full" />
           <div className="hero-portrait-shimmer" style={shimmerMaskStyle} aria-hidden="true" />
         </div>
 

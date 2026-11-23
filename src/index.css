@@ -173,6 +173,31 @@
   }
 }
 
+/* Respiration lente de la trame de points, par-dessus la photo : une seconde animation,
+   indépendante du reflet (durée différente pour ne pas se synchroniser visiblement). */
+@layer components {
+  .hero-portrait-breathe {
+    animation: hero-portrait-breathe 9s var(--ease-in-out) infinite;
+  }
+}
+
+@keyframes hero-portrait-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-portrait-breathe {
+    animation: none;
+    opacity: 0.5;
+  }
+}
+
 /* Police des petits libellés, calée sur le label de section « 0X / Nom »
    (Section.jsx) : seule source pour les numéros, dates et rôles. */
 @layer components {
