@@ -1,8 +1,113 @@
+import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
+import TagDot from '@/components/portfolio/TagDot';
 import { SECTION_LABEL } from '@/components/portfolio/styles';
 import { cn } from '@/lib/utils';
 import { siteTexts } from '@/data/portfolioContent';
+
+// Libellés de sous-blocs (Rôle et équipe, Projet, Missions, Environnement technique) :
+// même famille et couleur que la partie numéro des en-têtes « 0X / Nom », en plus petit.
+const SUBLABEL = 'font-label text-[11.5px] font-medium text-accent2 md:text-[12px]';
+
+// Missions repliées au-delà de ce nombre, pour garder chaque poste lisible d'un coup d'œil.
+const MISSIONS_PREVIEW = 3;
+
+function TimelineItem({ job, delay }) {
+  const missions = job.missions || [];
+  const hasMore = missions.length > MISSIONS_PREVIEW;
+  const [expanded, setExpanded] = useState(!hasMore);
+  const visibleMissions = expanded ? missions : missions.slice(0, MISSIONS_PREVIEW);
+
+  return (
+    <Reveal delay={delay}>
+      <li className="relative">
+        {/* Repère carré comme ceux de Méthodologie : centré sur le filet de
+            l'ol et sur la première ligne (dates, 15 puis 17 px). */}
+        <span
+          aria-hidden="true"
+          className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-primary md:-left-[45px] md:top-[7px]"
+        />
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          {/* Typo du libellé d'en-tête (graisse de « Parcours »), dates en blanc. */}
+          <span className={cn(SECTION_LABEL, 'font-normal text-foreground')}>
+            {[job.start, job.end].filter(Boolean).join(' — ')}
+          </span>
+          {job.company && (
+            <span className="text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground">
+              {job.company}
+            </span>
+          )}
+        </div>
+        <h3 className="mt-2 font-heading text-[19px] font-semibold tracking-[-0.015em] md:text-[21px]">
+          {job.role}
+        </h3>
+        {job.context && (
+          <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-muted-foreground">
+            {job.context}
+          </p>
+        )}
+
+        {job.role_team && (
+          <div className="mt-5">
+            <p className={SUBLABEL}>Rôle et équipe</p>
+            <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-foreground/80">
+              {job.role_team}
+            </p>
+          </div>
+        )}
+
+        {job.project && (
+          <div className="mt-5">
+            <p className={SUBLABEL}>Projet</p>
+            <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-foreground/80">
+              {job.project}
+            </p>
+          </div>
+        )}
+
+        {missions.length > 0 && (
+          <div className="mt-5">
+            <p className={SUBLABEL}>Missions</p>
+            <ul className="mt-1.5 space-y-2">
+              {visibleMissions.map((mission) => (
+                <li key={mission} className="flex items-start gap-3 text-[13.5px] text-foreground/80">
+                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary/70" />
+                  {mission}
+                </li>
+              ))}
+            </ul>
+            {hasMore && (
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-accent2 transition-colors hover:text-accent2/80"
+              >
+                {expanded ? 'Voir moins' : `Voir ${missions.length - MISSIONS_PREVIEW} mission${missions.length - MISSIONS_PREVIEW > 1 ? 's' : ''} de plus`}
+                <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', expanded && 'rotate-180')} />
+              </button>
+            )}
+          </div>
+        )}
+
+        {job.tags?.length > 0 && (
+          <div className="mt-5">
+            <p className={SUBLABEL}>Environnement technique</p>
+            <ul className="mt-2 flex flex-wrap gap-x-[14px] gap-y-2">
+              {job.tags.map((tag) => (
+                <li key={tag} className="flex items-center gap-[6px] text-[12px] text-foreground/75">
+                  <TagDot tag={tag} size={6} />
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </li>
+    </Reveal>
+  );
+}
 
 export default function Timeline({ experiences, texts = siteTexts.timeline }) {
   const list = experiences || [];
@@ -26,45 +131,7 @@ export default function Timeline({ experiences, texts = siteTexts.timeline }) {
       ) : (
         <ol className="relative space-y-10 border-l border-border/80 pl-7 md:space-y-12 md:pl-10">
           {list.map((job, i) => (
-            <Reveal key={job.id} delay={0.05 * i}>
-              <li className="relative">
-                {/* Repère carré comme ceux de Méthodologie : centré sur le filet de
-                    l'ol et sur la première ligne (dates, 15 puis 17 px). */}
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-[33px] top-1.5 h-[9px] w-[9px] bg-primary md:-left-[45px] md:top-[7px]"
-                />
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                  {/* Typo du libellé d'en-tête (graisse de « Parcours »), dates en blanc. */}
-                  <span className={cn(SECTION_LABEL, 'font-normal text-foreground')}>
-                    {[job.start, job.end].filter(Boolean).join(' — ')}
-                  </span>
-                  {job.company && (
-                    <span className="text-[10.5px] uppercase tracking-[0.16em] text-muted-foreground">
-                      {job.company}
-                    </span>
-                  )}
-                </div>
-                <h3 className="mt-2 font-heading text-[19px] font-semibold tracking-[-0.015em] md:text-[21px]">
-                  {job.role}
-                </h3>
-                {job.context && (
-                  <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-muted-foreground">
-                    {job.context}
-                  </p>
-                )}
-                {job.missions?.length > 0 && (
-                  <ul className="mt-4 space-y-2">
-                    {job.missions.map((mission) => (
-                      <li key={mission} className="flex items-start gap-3 text-[13.5px] text-foreground/80">
-                        <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary/70" />
-                        {mission}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            </Reveal>
+            <TimelineItem key={job.id} job={job} delay={0.05 * i} />
           ))}
         </ol>
       )}

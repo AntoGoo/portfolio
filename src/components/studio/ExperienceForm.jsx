@@ -15,8 +15,11 @@ export default function ExperienceForm({ experience, onSaved, onCancel }) {
     start: '',
     end: '',
     context: '',
+    role_team: '',
+    project: '',
     ...(experience || {}),
     missions: (experience?.missions || []).join('\n'),
+    tags: (experience?.tags || []).join(', '),
   }));
   const [published, setPublished] = useState(experience?.published ?? true);
   const [saving, setSaving] = useState(false);
@@ -32,6 +35,10 @@ export default function ExperienceForm({ experience, onSaved, onCancel }) {
       missions: form.missions
         .split('\n')
         .map((line) => line.trim())
+        .filter(Boolean),
+      tags: form.tags
+        .split(',')
+        .map((tag) => tag.trim())
         .filter(Boolean),
       published,
       order: experience?.order ?? 99,
@@ -73,12 +80,24 @@ export default function ExperienceForm({ experience, onSaved, onCancel }) {
         </Field>
       </div>
 
-      <Field label="Contexte">
+      <Field label="Contexte" hint="Ligne « CDI · Clients : … » affichée sous le titre.">
         <Textarea value={form.context} onChange={set('context')} rows={2} />
+      </Field>
+
+      <Field label="Rôle et équipe">
+        <Textarea value={form.role_team} onChange={set('role_team')} rows={2} />
+      </Field>
+
+      <Field label="Projet">
+        <Textarea value={form.project} onChange={set('project')} rows={2} />
       </Field>
 
       <Field label="Missions principales" hint="Une mission par ligne.">
         <Textarea value={form.missions} onChange={set('missions')} rows={5} />
+      </Field>
+
+      <Field label="Environnement technique" hint="Tags séparés par des virgules.">
+        <Input value={form.tags} onChange={set('tags')} placeholder="Agile, Product Ownership, Jira" />
       </Field>
 
       <div className="flex items-center justify-between rounded-lg border border-border px-4 py-3">

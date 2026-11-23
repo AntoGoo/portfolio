@@ -9,8 +9,9 @@ export const TABLES = {
     orderBy: '"order" ASC, created_date ASC',
   },
   experiences: {
-    columns: ['company', 'role', 'start', 'end', 'context', 'missions', 'published', 'order'],
-    json: ['missions'],
+    columns: ['company', 'role', 'start', 'end', 'context', 'role_team', 'project', 'missions', 'tags',
+      'published', 'order'],
+    json: ['missions', 'tags'],
     orderBy: '"order" ASC, created_date ASC',
   },
   site_settings: {
