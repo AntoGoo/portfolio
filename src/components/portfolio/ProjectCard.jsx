@@ -1,9 +1,9 @@
-import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TagDot from '@/components/portfolio/TagDot';
 import { formatProjectDate } from '@/lib/projectDate';
 
-export default function ProjectCard({ project, featured, onOpen }) {
+export default function ProjectCard({ project, featured }) {
   const category = (project.year || '').trim();
   // La catégorie est déjà affichée en haut de la carte : pas de doublon dans les tags.
   const tags = (project.tags || []).filter((tag) => tag.trim().toLowerCase() !== category.toLowerCase());
@@ -20,12 +20,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
     >
       <span className="pointer-events-none absolute inset-x-0 top-0 h-px bg-primary/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label={`Ouvrir la fiche : ${project.title}`}
-        className="absolute inset-0 z-0 cursor-pointer rounded-xl focus-visible:-outline-offset-2"
-      />
+      {/* Ouverture de la fiche désactivée temporairement, cf. ProjectDrawer pour réactiver. */}
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex min-h-9 items-start justify-between gap-4">
@@ -70,11 +65,7 @@ export default function ProjectCard({ project, featured, onOpen }) {
               ))}
             </ul>
           )}
-          <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
-            <span className="flex items-center gap-2 text-[12px] font-medium text-foreground/70 transition-colors group-hover:text-foreground">
-              Ouvrir la fiche
-              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </span>
+          <div className="mt-5 flex items-center justify-end border-t border-border/70 pt-4">
             {project.link && (
               <a
                 href={project.link}
