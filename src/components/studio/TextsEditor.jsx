@@ -53,18 +53,6 @@ const SCHEMA = [
       ...SECTION_FIELDS,
       { key: 'intro', label: 'Paragraphe principal', type: 'textarea', rows: 5 },
       { key: 'paragraphs', label: 'Paragraphes suivants', type: 'lines', hint: 'Un paragraphe par ligne.', rows: 6 },
-      {
-        key: 'principles',
-        label: 'Cartes',
-        type: 'items',
-        fixed: true,
-        itemTitle: (item, i) => (i === 0 ? 'Grande carte' : `Carte ${i + 1}`),
-        fields: [
-          { key: 'title', label: 'Titre', type: 'text' },
-          { key: 'lead', label: 'Phrase d’introduction', type: 'textarea', rows: 2 },
-          { key: 'detail', label: 'Points détaillés', type: 'lines', hint: 'Un point par ligne.', rows: 4 },
-        ],
-      },
     ],
   },
   {
