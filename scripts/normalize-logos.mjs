@@ -1,12 +1,15 @@
 // Migration unique : repasse tous les logos de projets déjà en base dans l'algorithme de
-// src/lib/normalizeLogo.js (blanc sur fond transparent, détouré) et réécrit les fichiers R2
-// en place (même clé, donc aucun changement de logo_url en base).
+// src/lib/normalizeLogo.js (blanc sur fond transparent, détouré). Écrit le résultat sous une
+// NOUVELLE clé R2 et met à jour logo_url en base : /files/[key].js sert les fichiers avec
+// cache-control immutable (1 an), réécrire à l'identique l'ancienne clé laisserait les
+// navigateurs qui l'ont déjà visitée bloqués sur l'ancien fichier en cache.
 //
 // Usage :
 //   node scripts/normalize-logos.mjs --remote                  (production)
 //   node scripts/normalize-logos.mjs --local                   (D1/R2 locaux de wrangler dev)
 //   node scripts/normalize-logos.mjs --remote --tolerance=50
 import { execFileSync } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -29,20 +32,22 @@ if (!target) {
 const toleranceArg = args.find((a) => a.startsWith('--tolerance='));
 const tolerance = toleranceArg ? Number(toleranceArg.split('=')[1]) : LOGO_DEFAULT_TOLERANCE;
 
-function wrangler(cmdArgs) {
-  return execFileSync('npx', ['wrangler', ...cmdArgs], { encoding: 'utf8' });
+// Les commandes d'écriture (r2 put, d1 execute UPDATE) peuvent demander une confirmation
+// interactive : stdio hérité pour qu'elles voient le vrai terminal de qui lance ce script
+// (execFileSync met des pipes par défaut, perçus comme un environnement non interactif).
+function wrangler(cmdArgs, { capture = false } = {}) {
+  if (capture) {
+    return execFileSync('npx', ['wrangler', ...cmdArgs], { encoding: 'utf8' });
+  }
+  execFileSync('npx', ['wrangler', ...cmdArgs], { stdio: 'inherit' });
+  return '';
 }
 
 function listLogos() {
-  const out = wrangler([
-    'd1',
-    'execute',
-    'portfolio',
-    target,
-    '--command',
-    "SELECT id, logo_url FROM projects WHERE logo_url != ''",
-    '--json',
-  ]);
+  const out = wrangler(
+    ['d1', 'execute', 'portfolio', target, '--command', "SELECT id, logo_url FROM projects WHERE logo_url != ''", '--json'],
+    { capture: true },
+  );
   const [{ results }] = JSON.parse(out);
   return results;
 }
@@ -61,7 +66,8 @@ async function loadRaster(srcPath, isSvg) {
 
 async function processLogo(key, tmpDir) {
   const srcPath = join(tmpDir, `src-${key.replace(/[^a-z0-9.]/gi, '_')}`);
-  const outPath = join(tmpDir, `out-${key.replace(/[^a-z0-9.]/gi, '_')}.png`);
+  const newKey = `${randomUUID()}.png`;
+  const outPath = join(tmpDir, newKey);
   wrangler(['r2', 'object', 'get', `${BUCKET}/${key}`, '--file', srcPath, target]);
 
   const isSvg = key.toLowerCase().endsWith('.svg');
@@ -82,7 +88,8 @@ async function processLogo(key, tmpDir) {
   }
   await pipeline.png().toFile(outPath);
 
-  wrangler(['r2', 'object', 'put', `${BUCKET}/${key}`, '--file', outPath, '--content-type', 'image/png', target]);
+  wrangler(['r2', 'object', 'put', `${BUCKET}/${newKey}`, '--file', outPath, '--content-type', 'image/png', '-y', target]);
+  return newKey;
 }
 
 async function main() {
@@ -98,8 +105,17 @@ async function main() {
       const key = logo_url.replace(/^\/files\//, '');
       process.stdout.write(`- ${id} (${key})... `);
       try {
-        await processLogo(key, tmpDir);
-        console.log('ok');
+        const newKey = await processLogo(key, tmpDir);
+        wrangler([
+          'd1',
+          'execute',
+          'portfolio',
+          target,
+          '--command',
+          `UPDATE projects SET logo_url = '/files/${newKey}' WHERE id = '${id}'`,
+          '-y',
+        ]);
+        console.log(`ok -> /files/${newKey}`);
       } catch (err) {
         console.log(`échec : ${err.message}`);
       }
