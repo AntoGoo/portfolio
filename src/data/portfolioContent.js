@@ -283,30 +283,6 @@ export const siteTexts = {
       'Je travaille avec des interlocuteurs variés — directions, métiers, équipes techniques, prestataires — et je m\'attache à rendre les projets lisibles : objectifs clairs, périmètre assumé, suivi régulier et décisions documentées.',
       "Mon approche reste orientée usage : une solution n'a de valeur que si elle fonctionne, si elle est adoptée et si elle peut évoluer avec les besoins.",
     ],
-    principles: [
-      {
-        title: 'Interface',
-        lead: 'Traduire une demande métier en solution technique réaliste, sans jargon inutile.',
-        detail: [
-          'Je fais le lien entre ceux qui expriment le besoin et ceux qui le construisent. Reformuler ce que le métier attend vraiment, poser les contraintes techniques en termes clairs, repérer tôt ce qui coûtera cher plus tard.',
-          "Plus de vingt ans de projets, de l'événementiel à la GED en passant par le jeu vidéo, m'ont appris à parler les deux langues et à faire en sorte que chacun comprenne ce que l'autre demande.",
-        ],
-      },
-      {
-        title: 'Pragmatisme',
-        lead: 'Des périmètres assumés, des priorités claires et des décisions tracées.',
-        detail: [
-          'Un périmètre réduit qui tient ses délais, et chaque arbitrage écrit pour savoir plus tard pourquoi on a tranché.',
-        ],
-      },
-      {
-        title: 'Résultats',
-        lead: 'Des livrables utiles, adoptés par les utilisateurs et faits pour évoluer.',
-        detail: [
-          "Un projet se juge à l'usage trois mois après la mise en service, avec des utilisateurs impliqués dès la recette.",
-        ],
-      },
-    ],
   },
   expertises: {
     eyebrow: 'Expertises',
