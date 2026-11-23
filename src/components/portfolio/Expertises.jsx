@@ -6,10 +6,10 @@ import { cn } from '@/lib/utils';
 // Ordre d'affichage (et d'empilement en mobile) et place de chaque carte dans
 // la grille bento : 1 colonne, 2 en tablette, 3 colonnes sur 2 rangées en desktop.
 const LAYOUT = [
-  { key: 'projet', className: 'sm:col-span-2 lg:col-span-1 lg:col-start-1 lg:row-span-2 lg:row-start-1', featured: true },
+  { key: 'projet', className: 'lg:col-start-1 lg:row-start-1' },
   { key: 'gouvernance', className: 'lg:col-start-2 lg:row-start-1' },
   { key: 'management', className: 'lg:col-start-3 lg:row-start-1' },
-  { key: 'techno', className: 'sm:col-span-2 lg:col-start-2 lg:row-start-2', twoColumns: true },
+  { key: 'techno', className: 'sm:col-span-2 lg:col-span-3 lg:row-start-2', twoColumns: true },
 ];
 
 function Bullet() {
