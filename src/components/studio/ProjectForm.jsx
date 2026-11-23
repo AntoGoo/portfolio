@@ -4,9 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/components/ui/use-toast';
 import Field from '@/components/studio/Field';
 import { Image } from '@/components/ui/image';
+import normalizeLogo from '@/lib/normalizeLogo';
+import { LOGO_DEFAULT_TOLERANCE } from '@/lib/logoNormalizeCore';
 
 const empty = {
   title: '',
@@ -36,6 +39,12 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
   const [published, setPublished] = useState(project?.published ?? true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  // Logo en attente de validation : fichier d'origine (pour retraiter si la tolérance change),
+  // aperçu local (blob) et tolérance courante. Rien n'est envoyé tant que ce n'est pas confirmé.
+  const [pendingLogo, setPendingLogo] = useState(null);
+  const [pendingPreviewUrl, setPendingPreviewUrl] = useState('');
+  const [tolerance, setTolerance] = useState(LOGO_DEFAULT_TOLERANCE);
+  const [normalizing, setNormalizing] = useState(false);
 
   const set = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
   // Mois « AAAA-MM » : l'ordre alphabétique suit l'ordre chronologique.
@@ -44,18 +53,52 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
       ? 'La fin ne peut pas précéder le début.'
       : null;
 
-  const uploadLogo = async (event) => {
+  const runNormalize = async (file, toleranceValue) => {
+    setNormalizing(true);
+    try {
+      const blob = await normalizeLogo(file, { tolerance: toleranceValue });
+      setPendingPreviewUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return URL.createObjectURL(blob);
+      });
+    } catch (err) {
+      toast({ title: 'Normalisation impossible', description: err.message, variant: 'destructive' });
+    }
+    setNormalizing(false);
+  };
+
+  const pickLogo = async (event) => {
     const file = event.target.files?.[0];
+    event.target.value = '';
     if (!file) return;
+    setPendingLogo(file);
+    setTolerance(LOGO_DEFAULT_TOLERANCE);
+    await runNormalize(file, LOGO_DEFAULT_TOLERANCE);
+  };
+
+  const changeTolerance = async ([value]) => {
+    setTolerance(value);
+    if (pendingLogo) await runNormalize(pendingLogo, value);
+  };
+
+  const cancelPendingLogo = () => {
+    if (pendingPreviewUrl) URL.revokeObjectURL(pendingPreviewUrl);
+    setPendingLogo(null);
+    setPendingPreviewUrl('');
+  };
+
+  const confirmLogo = async () => {
+    if (!pendingPreviewUrl) return;
     setUploading(true);
     try {
-      const { file_url } = await api.upload(file);
+      const blob = await fetch(pendingPreviewUrl).then((r) => r.blob());
+      const { file_url } = await api.upload(new File([blob], 'logo.png', { type: 'image/png' }));
       setForm((prev) => ({ ...prev, logo_url: file_url }));
+      cancelPendingLogo();
     } catch (err) {
       toast({ title: 'Envoi impossible', description: err.message, variant: 'destructive' });
     }
     setUploading(false);
-    event.target.value = '';
   };
 
   const save = async (event) => {
@@ -119,7 +162,10 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
         </Field>
       </div>
 
-      <Field label="Logo" hint="Affiché en haut de la carte. PNG, SVG ou JPG, sur fond transparent de préférence.">
+      <Field
+        label="Logo"
+        hint="Détouré et passé en blanc automatiquement, quelle que soit la couleur d'origine. PNG, SVG, JPG ou WEBP."
+      >
         <div className="flex items-center gap-3">
           {form.logo_url ? (
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg border border-border bg-background/40 p-1.5">
@@ -128,9 +174,9 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
           ) : null}
           <Input
             type="file"
-            accept="image/*"
-            onChange={uploadLogo}
-            disabled={uploading}
+            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+            onChange={pickLogo}
+            disabled={normalizing || uploading}
             className="cursor-pointer text-[12px] file:mr-3 file:rounded file:border-0 file:bg-secondary file:px-2 file:py-1 file:text-[12px] file:text-foreground"
           />
           {form.logo_url ? (
@@ -144,6 +190,31 @@ export default function ProjectForm({ project, onSaved, onCancel }) {
             </Button>
           ) : null}
         </div>
+
+        {(pendingPreviewUrl || normalizing) && (
+          <div className="mt-3 space-y-3 rounded-lg border border-border p-3">
+            <div className="flex h-16 items-center justify-center rounded-md bg-background">
+              {normalizing ? (
+                <span className="text-[12px] text-muted-foreground">Traitement…</span>
+              ) : (
+                <img src={pendingPreviewUrl} alt="Aperçu du logo normalisé" className="h-9 w-auto" />
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-16 shrink-0 text-[11px] text-muted-foreground">Tolérance</span>
+              <Slider value={[tolerance]} onValueChange={changeTolerance} min={20} max={80} step={1} />
+              <span className="w-6 shrink-0 text-right text-[11px] text-muted-foreground">{tolerance}</span>
+            </div>
+            <div className="flex items-center justify-end gap-2">
+              <Button type="button" variant="ghost" size="sm" onClick={cancelPendingLogo}>
+                Annuler
+              </Button>
+              <Button type="button" size="sm" onClick={confirmLogo} disabled={normalizing || uploading}>
+                {uploading ? 'Envoi…' : 'Utiliser ce logo'}
+              </Button>
+            </div>
+          </div>
+        )}
       </Field>
 
       <Field label="Contexte">

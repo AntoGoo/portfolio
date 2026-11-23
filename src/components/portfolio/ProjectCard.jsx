@@ -38,14 +38,9 @@ export default function ProjectCard({ project, featured, onOpen }) {
             <span aria-hidden="true" />
           )}
           {project.logo_url && (
-            // Logo ramené en blanc uni quel que soit le fichier : sans effet sur un
-            // logo déjà blanc et détouré, indispensable pour un logo en couleur.
-            <img
-              src={project.logo_url}
-              alt={client}
-              loading="lazy"
-              className="h-9 w-auto max-w-[96px] shrink-0 object-contain object-right-top brightness-0 invert sm:max-w-[110px]"
-            />
+            // Logo déjà normalisé en blanc sur fond transparent à l'import (normalizeLogo) :
+            // aucun filtre de couleur à appliquer ici.
+            <img src={project.logo_url} alt={client} loading="lazy" className="h-9 w-auto object-contain" />
           )}
         </div>
 
