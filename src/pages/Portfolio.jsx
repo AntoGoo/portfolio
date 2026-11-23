@@ -5,7 +5,6 @@ import About from '@/components/portfolio/About';
 import Expertises from '@/components/portfolio/Expertises';
 import Projects from '@/components/portfolio/Projects';
 import Method from '@/components/portfolio/Method';
-import Skills from '@/components/portfolio/Skills';
 import Timeline from '@/components/portfolio/Timeline';
 import Contact from '@/components/portfolio/Contact';
 import Footer from '@/components/portfolio/Footer';
@@ -26,7 +25,6 @@ export default function Portfolio() {
         <Expertises texts={texts.expertises} />
         <Projects projects={projects} texts={texts.projects} />
         <Method texts={texts.method} />
-        <Skills texts={texts.skills} />
         <Timeline experiences={experiences} texts={texts.timeline} />
         <Contact profile={profile} texts={texts} experiences={experiences} />
       </main>

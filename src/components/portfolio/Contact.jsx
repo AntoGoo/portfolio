@@ -27,7 +27,7 @@ export default function Contact({ profile = defaultProfile, texts: allTexts = si
     <section id="contact" className="border-t border-border/70 py-20 md:py-28">
       <div className="mx-auto grid w-full max-w-[1200px] gap-12 px-6 md:px-10 lg:grid-cols-[1.15fr_1fr] lg:items-start lg:gap-20">
         <Reveal>
-          <SectionHeading index="07" eyebrow={texts.eyebrow} title={texts.title} />
+          <SectionHeading index="06" eyebrow={texts.eyebrow} title={texts.title} />
           <button
             type="button"
             onClick={() => downloadCv({ profile, experiences, texts: allTexts })}

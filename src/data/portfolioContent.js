@@ -21,7 +21,6 @@ export const navLinks = [
   { id: 'expertises', label: 'Expertises' },
   { id: 'realisations', label: 'Réalisations' },
   { id: 'methode', label: 'Méthode' },
-  { id: 'competences', label: 'Environnement' },
   { id: 'parcours', label: 'Parcours' },
   { id: 'contact', label: 'Contact' },
 ];

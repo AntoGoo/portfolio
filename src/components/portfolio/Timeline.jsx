@@ -10,7 +10,7 @@ export default function Timeline({ experiences, texts = siteTexts.timeline }) {
   return (
     <Section
       id="parcours"
-      index="06"
+      index="05"
       eyebrow={texts.eyebrow}
       title={texts.title}
       lead={texts.lead}
