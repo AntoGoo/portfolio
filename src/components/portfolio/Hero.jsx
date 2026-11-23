@@ -4,6 +4,7 @@ import { downloadCv } from '@/lib/generateCv';
 import { profile as defaultProfile, siteTexts } from '@/data/portfolioContent';
 
 const FALLBACK_PORTRAIT = '/images/portrait-dots.webp';
+const BASE_PORTRAIT = '/images/portrait.webp';
 
 export default function Hero({ profile = defaultProfile, texts = siteTexts, experiences }) {
   const [firstName, ...rest] = profile.name.split(' ');
@@ -18,6 +19,16 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
     fetchpriority: 'high',
     decoding: 'async',
   };
+  // Photo d'origine, sous la trame de points : chemin fixe, indépendant d'un éventuel
+  // photoUrl personnalisé (la trame de points, elle, suit profile.photoUrl ci-dessus).
+  const basePhotoProps = {
+    src: BASE_PORTRAIT,
+    alt: '',
+    width: 1000,
+    height: 1621,
+    loading: 'eager',
+    decoding: 'async',
+  };
   // Même image que le portrait, posée en mask-image sur le reflet : il ne s'allume que sur
   // les points déjà dessinés, jamais sur le fond transparent autour.
   const shimmerMaskStyle = { WebkitMaskImage: `url("${portrait}")`, maskImage: `url("${portrait}")` };
@@ -30,12 +41,14 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
 
       <div className="relative mx-auto grid w-full max-w-[1200px] items-center gap-4 px-6 pb-20 pt-10 md:px-10 md:pb-28 md:pt-24 lg:min-h-[784px] lg:grid-cols-12 lg:gap-10">
         <div className="relative mx-auto h-96 w-full max-w-[360px] lg:hidden">
-          <img {...portraitProps} className="hero-portrait hero-portrait--mobile h-full w-full" />
+          <img {...basePhotoProps} className="hero-portrait hero-portrait--mobile h-full w-full" />
+          <img {...portraitProps} className="hero-portrait hero-portrait--mobile absolute inset-0 h-full w-full opacity-65" />
           <div className="hero-portrait-shimmer" style={shimmerMaskStyle} aria-hidden="true" />
         </div>
         {/* Décalé de 40 px vers la droite ; la section (overflow-hidden) rogne ce qui dépasse. */}
         <div className="absolute bottom-0 right-0 z-0 hidden h-full w-[52%] lg:block lg:translate-x-10">
-          <img {...portraitProps} className="hero-portrait hero-portrait--desktop h-full w-full" />
+          <img {...basePhotoProps} className="hero-portrait hero-portrait--desktop h-full w-full" />
+          <img {...portraitProps} className="hero-portrait hero-portrait--desktop absolute inset-0 h-full w-full opacity-65" />
           <div className="hero-portrait-shimmer" style={shimmerMaskStyle} aria-hidden="true" />
         </div>
 
