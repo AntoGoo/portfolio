@@ -276,7 +276,7 @@ export const siteTexts = {
   },
   about: {
     eyebrow: 'Profil',
-    title: 'Un parcours entre pilotage et technique',
+    title: 'Un parcours construit sur le terrain',
     lead: '',
     intro:
       "Dirigeant d'une société d'ingénierie événementielle pendant 16 ans, puis chef de projet en GED et en jeux vidéo / serious games : mon parcours mêle développement et conduite de projets. Cette expérience m'a appris à traduire une demande métier en solution concrète, à arbitrer quand c'est nécessaire et à tenir le cap jusqu'à la mise en service.",
