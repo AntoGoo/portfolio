@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
 import Section from '@/components/portfolio/Section';
 import Reveal from '@/components/portfolio/Reveal';
 import TagDot from '@/components/portfolio/TagDot';
@@ -11,14 +9,8 @@ import { siteTexts } from '@/data/portfolioContent';
 // même famille et couleur que la partie numéro des en-têtes « 0X / Nom », en plus petit.
 const SUBLABEL = 'font-label text-[11.5px] font-medium text-accent2 md:text-[12px]';
 
-// Missions repliées au-delà de ce nombre, pour garder chaque poste lisible d'un coup d'œil.
-const MISSIONS_PREVIEW = 3;
-
 function TimelineItem({ job, delay }) {
   const missions = job.missions || [];
-  const hasMore = missions.length > MISSIONS_PREVIEW;
-  const [expanded, setExpanded] = useState(!hasMore);
-  const visibleMissions = expanded ? missions : missions.slice(0, MISSIONS_PREVIEW);
 
   return (
     <Reveal delay={delay}>
@@ -71,23 +63,13 @@ function TimelineItem({ job, delay }) {
           <div className="mt-5">
             <p className={SUBLABEL}>Missions</p>
             <ul className="mt-1.5 space-y-2">
-              {visibleMissions.map((mission) => (
+              {missions.map((mission) => (
                 <li key={mission} className="flex items-start gap-3 text-[13.5px] text-foreground/80">
                   <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-primary/70" />
                   {mission}
                 </li>
               ))}
             </ul>
-            {hasMore && (
-              <button
-                type="button"
-                onClick={() => setExpanded((v) => !v)}
-                className="mt-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-accent2 transition-colors hover:text-accent2/80"
-              >
-                {expanded ? 'Voir moins' : `Voir ${missions.length - MISSIONS_PREVIEW} mission${missions.length - MISSIONS_PREVIEW > 1 ? 's' : ''} de plus`}
-                <ChevronDown className={cn('h-3.5 w-3.5 transition-transform', expanded && 'rotate-180')} />
-              </button>
-            )}
           </div>
         )}
 
