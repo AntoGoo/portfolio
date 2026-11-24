@@ -291,8 +291,9 @@ export const siteTexts = {
     title: 'Un parcours construit sur le terrain',
     lead: '',
     intro:
-      "Dirigeant d'une société d'ingénierie événementielle pendant 16 ans, puis chef de projet en GED et en jeux vidéo / serious games : mon parcours mêle développement et conduite de projets. Cette expérience m'a appris à traduire une demande métier en solution concrète, à arbitrer quand c'est nécessaire et à tenir le cap jusqu'à la mise en service.",
+      "Dirigeant d'une société d'ingénierie événementielle pendant 16 ans, puis chef de projet en dématérialisation et en jeux vidéo : mon parcours mêle conduite de projets, développement et intégration.",
     paragraphs: [
+      "Ces expériences m'ont appris à traduire une demande métier en solutions techniques pertinentes, à arbitrer et à tenir les engagements jusqu'à la mise en production.",
       'Je travaille avec des interlocuteurs variés — directions, métiers, équipes techniques, prestataires — et je m\'attache à rendre les projets lisibles : objectifs clairs, périmètre assumé, suivi régulier et décisions documentées.',
       "Mon approche reste orientée usage : une solution n'a de valeur que si elle fonctionne, si elle est adoptée et si elle peut évoluer avec les besoins.",
     ],
