@@ -5,7 +5,7 @@ import { SECTION_LABEL } from '@/components/portfolio/styles';
 import { cn } from '@/lib/utils';
 import { siteTexts } from '@/data/portfolioContent';
 
-// Libellés de sous-blocs (Rôle et équipe, Projet, Missions, Environnement technique) :
+// Libellés de sous-blocs (Rôle et équipe, Projet, Missions, Environnement) :
 // même famille et couleur que la partie numéro des en-têtes « 0X / Nom », en plus petit.
 const SUBLABEL = 'font-label text-[11.5px] font-medium text-primary md:text-[12px]';
 
@@ -75,7 +75,7 @@ function TimelineItem({ job, delay }) {
 
         {job.tags?.length > 0 && (
           <div className="mt-5">
-            <p className={SUBLABEL}>Environnement technique</p>
+            <p className={SUBLABEL}>Environnement</p>
             <ul className="mt-2 flex flex-wrap gap-x-[14px] gap-y-2">
               {job.tags.map((tag) => (
                 <li key={tag} className="flex items-center gap-[6px] text-[12px] text-foreground/75">
