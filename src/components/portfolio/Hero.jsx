@@ -1,12 +1,12 @@
 import { ArrowDown, Download } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
-import { downloadCv } from '@/lib/generateCv';
+import { CV_FILE_NAME, cvHref } from '@/lib/cv';
 import { profile as defaultProfile, siteTexts } from '@/data/portfolioContent';
 
 const FALLBACK_PORTRAIT = '/images/portrait-dots.webp';
 const BASE_PORTRAIT = '/images/portrait.webp';
 
-export default function Hero({ profile = defaultProfile, texts = siteTexts, experiences }) {
+export default function Hero({ profile = defaultProfile, texts = siteTexts }) {
   const [firstName, ...rest] = profile.name.split(' ');
   const portrait = profile.photoUrl || profile.photo_url || FALLBACK_PORTRAIT;
   const location = profile.location?.trim();
@@ -99,14 +99,14 @@ export default function Hero({ profile = defaultProfile, texts = siteTexts, expe
                 {texts.hero.ctaPrimary}
                 <ArrowDown className="h-4 w-4" />
               </a>
-              <button
-                type="button"
-                onClick={() => downloadCv({ profile, experiences, texts })}
+              <a
+                href={cvHref(profile)}
+                download={CV_FILE_NAME}
                 className="inline-flex h-[46px] items-center gap-2 rounded-md border border-border px-6 text-sm font-medium text-foreground transition-all hover:border-primary/60 hover:text-primary"
               >
                 <Download className="h-4 w-4" />
                 {texts.hero.ctaCv}
-              </button>
+              </a>
             </div>
           </Reveal>
         </div>

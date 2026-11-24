@@ -20,13 +20,13 @@ export default function Portfolio() {
     <div className="portfolio bg-page min-h-screen">
       <Nav texts={texts.nav} />
       <main>
-        <Hero profile={profile} texts={texts} experiences={experiences} />
+        <Hero profile={profile} texts={texts} />
         <About texts={texts.about} />
         <Expertises texts={texts.expertises} />
         <Method texts={texts.method} />
         <Projects projects={projects} texts={texts.projects} />
         <Timeline experiences={experiences} texts={texts.timeline} />
-        <Contact profile={profile} texts={texts} experiences={experiences} />
+        <Contact profile={profile} texts={texts} />
       </main>
       <Footer profile={profile} texts={texts} />
     </div>
