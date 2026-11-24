@@ -1,8 +1,129 @@
-import { Download } from 'lucide-react';
+import { useState } from 'react';
+import { AlertCircle, CheckCircle2, Download, Loader2 } from 'lucide-react';
 import Reveal from '@/components/portfolio/Reveal';
 import { SectionHeading } from '@/components/portfolio/Section';
 import { CV_FILE_NAME, cvHref } from '@/lib/cv';
 import { profile as defaultProfile, siteTexts } from '@/data/portfolioContent';
+
+const fieldClass =
+  'w-full rounded-md border border-border bg-transparent px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60';
+const fieldLabelClass = 'mb-1.5 block text-[12px] font-medium uppercase tracking-[0.08em] text-muted-foreground';
+
+function ContactForm() {
+  const [fields, setFields] = useState({ name: '', email: '', message: '', company: '' });
+  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onChange = (key) => (event) => setFields((prev) => ({ ...prev, [key]: event.target.value }));
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+    setErrorMessage('');
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(fields),
+      });
+      const data = await response.json().catch(() => null);
+      if (!response.ok) throw new Error(data?.error || 'Envoi impossible pour le moment.');
+      setStatus('success');
+      setFields({ name: '', email: '', message: '', company: '' });
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage(err.message || 'Envoi impossible pour le moment.');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <p className="flex items-center gap-2.5 text-[15px] text-foreground">
+        <CheckCircle2 className="h-5 w-5 shrink-0 text-primary" />
+        Message envoyé, merci : je reviens vers vous rapidement.
+      </p>
+    );
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+      {/* Honeypot : un humain ne voit ni ne remplit ce champ (hors écran, pas display:none). */}
+      <input
+        type="text"
+        name="company"
+        value={fields.company}
+        onChange={onChange('company')}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+      />
+
+      <div>
+        <label htmlFor="contact-name" className={fieldLabelClass}>
+          Nom
+        </label>
+        <input
+          id="contact-name"
+          type="text"
+          required
+          value={fields.name}
+          onChange={onChange('name')}
+          disabled={status === 'sending'}
+          className={fieldClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="contact-email" className={fieldLabelClass}>
+          E-mail
+        </label>
+        <input
+          id="contact-email"
+          type="email"
+          required
+          value={fields.email}
+          onChange={onChange('email')}
+          disabled={status === 'sending'}
+          className={fieldClass}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="contact-message" className={fieldLabelClass}>
+          Message
+        </label>
+        <textarea
+          id="contact-message"
+          required
+          rows={4}
+          maxLength={5000}
+          value={fields.message}
+          onChange={onChange('message')}
+          disabled={status === 'sending'}
+          className={`${fieldClass} resize-none`}
+        />
+      </div>
+
+      {status === 'error' && (
+        <p className="flex items-start gap-2 text-[14px] text-destructive">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          {errorMessage}
+        </p>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === 'sending'}
+        className="inline-flex h-11 items-center justify-center gap-2 rounded-[6px] border border-primary px-6 text-[15px] font-medium text-primary transition-colors hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {status === 'sending' && <Loader2 className="h-4 w-4 animate-spin" />}
+        {status === 'sending' ? 'Envoi…' : 'Envoyer le message'}
+      </button>
+    </form>
+  );
+}
 
 function ContactBlock({ label, children }) {
   return (
@@ -20,7 +141,6 @@ const valueClass = 'font-heading text-[18px] font-semibold leading-snug text-for
 
 export default function Contact({ profile = defaultProfile, texts: allTexts = siteTexts }) {
   const texts = allTexts.contact;
-  const email = profile.email;
   const linkedin = profile.linkedin;
 
   return (
@@ -40,22 +160,8 @@ export default function Contact({ profile = defaultProfile, texts: allTexts = si
 
         <Reveal delay={0.05}>
           <div className="divide-y divide-border rounded-[10px] border border-border bg-card">
-            <ContactBlock label={texts.emailLabel}>
-              <a
-                href={email ? `mailto:${email}` : '#contact'}
-                className={`${valueClass} transition-colors [overflow-wrap:anywhere] hover:text-primary`}
-              >
-                {/* Sur petit écran, l'adresse passe à la ligne après « @ » plutôt qu'en plein mot. */}
-                {email ? (
-                  <>
-                    {email.slice(0, email.indexOf('@') + 1)}
-                    <wbr />
-                    {email.slice(email.indexOf('@') + 1)}
-                  </>
-                ) : (
-                  'Adresse à renseigner'
-                )}
-              </a>
+            <ContactBlock label="Envoyer un message">
+              <ContactForm />
             </ContactBlock>
 
             <ContactBlock label={texts.linkedinLabel}>
