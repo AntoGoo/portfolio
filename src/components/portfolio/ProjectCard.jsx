@@ -23,19 +23,30 @@ export default function ProjectCard({ project, featured }) {
       {/* Ouverture de la fiche désactivée temporairement, cf. ProjectDrawer pour réactiver. */}
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
-        <div className="flex min-h-9 items-start justify-between gap-4">
-          {category ? (
+        {/* Zone logo : hauteur fixe pour garder toutes les cartes alignées, même sans logo. */}
+        <div className="flex h-[60px] items-center border-b border-border/70 sm:h-[72px]">
+          {project.logo_url ? (
+            // Logo déjà normalisé en blanc sur fond transparent à l'import (normalizeLogo) :
+            // aucun filtre de couleur à appliquer ici.
+            <img
+              src={project.logo_url}
+              alt={client}
+              loading="lazy"
+              className="h-auto max-h-[36px] w-auto max-w-[120px] object-contain object-left sm:max-h-[44px] sm:max-w-[140px]"
+            />
+          ) : (
+            <span className="font-label text-[13px] uppercase tracking-[0.14em] text-muted-foreground">
+              {client}
+            </span>
+          )}
+        </div>
+
+        <div className="mt-4 flex min-h-9 items-start">
+          {category && (
             <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-foreground/80">
               <TagDot tag={category} size={7} />
               {category}
             </span>
-          ) : (
-            <span aria-hidden="true" />
-          )}
-          {project.logo_url && (
-            // Logo déjà normalisé en blanc sur fond transparent à l'import (normalizeLogo) :
-            // aucun filtre de couleur à appliquer ici.
-            <img src={project.logo_url} alt={client} loading="lazy" className="h-9 w-auto object-contain" />
           )}
         </div>
 
