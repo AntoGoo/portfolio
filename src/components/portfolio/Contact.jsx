@@ -9,6 +9,7 @@ const fieldClass =
   'w-full rounded-md border border-border bg-transparent px-3 py-2 text-[15px] text-foreground placeholder:text-muted-foreground/70 transition-colors focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60';
 const fieldLabelClass = 'mb-1.5 block text-[12px] font-medium uppercase tracking-[0.08em] text-muted-foreground';
 
+// Formulaire prêt mais désactivé, cf. décisions du 24 novembre — MailChannels mort, migration Resend en attente.
 function ContactForm() {
   const [fields, setFields] = useState({ name: '', email: '', message: '', company: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
@@ -141,6 +142,7 @@ const valueClass = 'font-heading text-[18px] font-semibold leading-snug text-for
 
 export default function Contact({ profile = defaultProfile, texts: allTexts = siteTexts }) {
   const texts = allTexts.contact;
+  const email = profile.email;
   const linkedin = profile.linkedin;
 
   return (
@@ -160,8 +162,22 @@ export default function Contact({ profile = defaultProfile, texts: allTexts = si
 
         <Reveal delay={0.05}>
           <div className="divide-y divide-border rounded-[10px] border border-border bg-card">
-            <ContactBlock label="Envoyer un message">
-              <ContactForm />
+            <ContactBlock label={texts.emailLabel}>
+              <a
+                href={email ? `mailto:${email}` : '#contact'}
+                className={`${valueClass} transition-colors [overflow-wrap:anywhere] hover:text-primary`}
+              >
+                {/* Sur petit écran, l'adresse passe à la ligne après « @ » plutôt qu'en plein mot. */}
+                {email ? (
+                  <>
+                    {email.slice(0, email.indexOf('@') + 1)}
+                    <wbr />
+                    {email.slice(email.indexOf('@') + 1)}
+                  </>
+                ) : (
+                  'Adresse à renseigner'
+                )}
+              </a>
             </ContactBlock>
 
             <ContactBlock label={texts.linkedinLabel}>
