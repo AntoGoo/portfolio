@@ -196,7 +196,7 @@ export default function Projects({ projects, texts = siteTexts.projects }) {
                   onClick={() => carouselApi?.scrollPrev()}
                   disabled={!canPrev}
                   aria-label="Projets précédents"
-                  className={cn(arrowClass, 'absolute left-0 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 bg-background')}
+                  className={cn(arrowClass, 'absolute -left-4 top-1/2 z-20 -translate-y-1/2 bg-background md:-left-10')}
                 >
                   <ChevronLeft className="h-[18px] w-[18px]" />
                 </button>
@@ -205,7 +205,7 @@ export default function Projects({ projects, texts = siteTexts.projects }) {
                   onClick={() => carouselApi?.scrollNext()}
                   disabled={!canNext}
                   aria-label="Projets suivants"
-                  className={cn(arrowClass, 'absolute right-0 top-1/2 z-20 -translate-y-1/2 translate-x-1/2 bg-background')}
+                  className={cn(arrowClass, 'absolute -right-4 top-1/2 z-20 -translate-y-1/2 bg-background md:-right-10')}
                 >
                   <ChevronRight className="h-[18px] w-[18px]" />
                 </button>
