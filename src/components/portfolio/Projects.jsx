@@ -158,6 +158,24 @@ export default function Projects({ projects, texts = siteTexts.projects }) {
                   <p aria-live="polite" className="font-label text-[13px] font-normal tabular-nums text-muted-foreground">
                     {counter}
                   </p>
+                  <button
+                    type="button"
+                    onClick={() => carouselApi?.scrollPrev()}
+                    disabled={!canPrev}
+                    aria-label="Projets précédents"
+                    className={arrowClass}
+                  >
+                    <ChevronLeft className="h-[18px] w-[18px]" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => carouselApi?.scrollNext()}
+                    disabled={!canNext}
+                    aria-label="Projets suivants"
+                    className={arrowClass}
+                  >
+                    <ChevronRight className="h-[18px] w-[18px]" />
+                  </button>
                 </div>
               )}
             </div>
@@ -169,47 +187,27 @@ export default function Projects({ projects, texts = siteTexts.projects }) {
             <Reveal>
               {/* Les flèches clavier sont gérées par Carousel, tant que le focus est dedans.
                   Un glisser ne déclenche pas le clic d'une carte (Embla l'annule). */}
-              <div className="relative">
-                {/* Remonté quand le filtre ou la taille de page change : retour à la première page. */}
-                <Carousel
-                  key={`${filter || 'all'}-${pageSize}`}
-                  opts={carouselOpts}
-                  setApi={setCarouselApi}
-                  aria-label="Réalisations"
-                  className="-mt-0.5"
-                >
-                  <CarouselContent className="pt-0.5">
-                    {pages.map((page, i) => (
-                      <CarouselItem key={page[0].id} aria-label={`Page ${i + 1} sur ${pages.length}`}>
-                        {/* content-start : une page plus courte que la plus haute garde ses cartes à leur hauteur. */}
-                        <div className="grid content-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                          {page.map((project) => (
-                            <ProjectCard key={project.id} project={project} onOpen={() => setActive(project)} />
-                          ))}
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                </Carousel>
-                <button
-                  type="button"
-                  onClick={() => carouselApi?.scrollPrev()}
-                  disabled={!canPrev}
-                  aria-label="Projets précédents"
-                  className={cn(arrowClass, 'absolute -left-4 top-1/2 z-20 -translate-y-1/2 bg-background md:-left-10')}
-                >
-                  <ChevronLeft className="h-[18px] w-[18px]" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => carouselApi?.scrollNext()}
-                  disabled={!canNext}
-                  aria-label="Projets suivants"
-                  className={cn(arrowClass, 'absolute -right-4 top-1/2 z-20 -translate-y-1/2 bg-background md:-right-10')}
-                >
-                  <ChevronRight className="h-[18px] w-[18px]" />
-                </button>
-              </div>
+              {/* Remonté quand le filtre ou la taille de page change : retour à la première page. */}
+              <Carousel
+                key={`${filter || 'all'}-${pageSize}`}
+                opts={carouselOpts}
+                setApi={setCarouselApi}
+                aria-label="Réalisations"
+                className="-mt-0.5"
+              >
+                <CarouselContent className="pt-0.5">
+                  {pages.map((page, i) => (
+                    <CarouselItem key={page[0].id} aria-label={`Page ${i + 1} sur ${pages.length}`}>
+                      {/* content-start : une page plus courte que la plus haute garde ses cartes à leur hauteur. */}
+                      <div className="grid content-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {page.map((project) => (
+                          <ProjectCard key={project.id} project={project} onOpen={() => setActive(project)} />
+                        ))}
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </Reveal>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
