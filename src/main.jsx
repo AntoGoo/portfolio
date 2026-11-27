@@ -11,9 +11,11 @@ import '@fontsource/inter/300.css'
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
 import '@fontsource/inter/600.css'
+import '@fontsource/inter/700.css'
 import '@fontsource/schibsted-grotesk/400.css'
 import '@fontsource/schibsted-grotesk/500.css'
 import '@fontsource/schibsted-grotesk/600.css'
+import '@fontsource/schibsted-grotesk/700.css'
 import '@/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

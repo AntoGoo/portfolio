@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { siteTexts } from '@/data/portfolioContent';
 
 // Libellés de sous-blocs (Rôle et équipe, Projet, Missions, Environnement) :
-// même famille et couleur que la partie numéro des en-têtes « 0X / Nom », en plus petit.
+// même famille que la partie numéro des en-têtes « 0X / Nom », en plus petit, en blanc gras.
 const SUBLABEL = 'font-label text-[11.5px] font-bold text-foreground md:text-[12px]';
 
 function TimelineItem({ job, delay }) {
