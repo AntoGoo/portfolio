@@ -47,7 +47,7 @@ export default function Method({ texts = siteTexts.method }) {
               <span className="block text-[36px] font-medium leading-none tracking-[-0.03em] text-foreground tabular-nums md:mt-7 md:text-[52px]">
                 {step.number || String(i + 1).padStart(2, '0')}
               </span>
-              <h3 className="mt-3.5 text-[18px] font-semibold leading-snug tracking-[-0.01em] text-primary md:mt-[22px]">
+              <h3 className="mt-3.5 text-[18px] font-bold leading-snug tracking-[-0.01em] text-foreground md:mt-[22px]">
                 {step.title}
               </h3>
               <p className="mt-2 text-[14px] font-normal leading-[1.5] text-muted-foreground">{step.text}</p>
